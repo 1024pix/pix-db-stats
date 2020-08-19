@@ -1,0 +1,23 @@
+{
+  "name": "pix-db-stats",
+  "version": "1.0.0",
+  "description": "Collecte de statistiques sur la base de données Pix",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1024pix/pix-db-stats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1024pix/pix-db-stats/issues"
+  },
+  "homepage": "https://github.com/1024pix/pix-db-stats#readme",
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
+}
