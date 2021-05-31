@@ -2,10 +2,13 @@
   "name": "pix-db-stats",
   "version": "1.0.0",
   "description": "Collecte de statistiques sur la base de données Pix",
-  "main": "index.js",
+  "main": "lib/application/main.js",
   "engines": {
     "node": "14.17.0",
     "npm": "6.14.13"
+  },
+  "scripts": {
+    "start": "node lib/application/main.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,8 @@
   },
   "homepage": "https://github.com/1024pix/pix-db-stats#readme",
   "dependencies": {
+    "axios": "^0.21.1",
+    "cron": "^1.8.2",
     "dotenv": "^10.0.0"
   }
 }
