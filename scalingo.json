@@ -1,0 +1,19 @@
+{
+  "name": "Pix DB Stats",
+  "env": {
+    "REVIEW_APP": {
+      "description": "Fetch database stats",
+      "value": "true"
+    }
+  },
+  "formation": {
+    "web": {
+      "amount": 0,
+      "size": "S"
+    },
+    "clock": {
+      "amount": 1,
+      "size": "S"
+    }
+  }
+}
