@@ -1,5 +1,5 @@
-const logDatabaseCPUsage = require('./lib/application/job');
+const task = require('./lib/application/task');
 
 (async ()=>{
-   await logDatabaseCPUsage();
+   await task();
 })()
