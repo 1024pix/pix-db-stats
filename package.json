@@ -2,13 +2,14 @@
   "name": "pix-db-stats",
   "version": "1.0.0",
   "description": "Collecte de statistiques sur la base de données Pix",
-  "main": "lib/application/main.js",
   "engines": {
     "node": "14.17.0",
     "npm": "6.14.13"
   },
   "scripts": {
-    "start": "node single-execution.js"
+    "metrics": "node ./lib/application/run-task-metrics.js",
+    "statements": "node ./lib/application/run-task-statements.js",
+    "schedule-tasks": "node ./lib/application/schedule-tasks.js"
   },
   "repository": {
     "type": "git",
