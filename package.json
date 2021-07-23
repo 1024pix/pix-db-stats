@@ -24,7 +24,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "cron": "^1.8.2",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "pg": "^8.6.0"
   },
   "devDependencies": {}
 }
