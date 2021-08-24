@@ -1,14 +1,15 @@
 # pix-db-stats
 
+## Installation
+Etapes:
+- créer `.env` à partir de `sample.env`
+- installer les dépendances `npm install`
+
 ## Exécution ponctuelle
+Exécuter:
+- métriques: `npm run metrics`
+- statistiques de requetes: `npm run statements`
+- temps réponse: `npm run response-time`
 
-Créer .env à partir de sample.env
-
-Installer `npm install`
-
-Exécuter `npm run start`
-
-Vous obtenez
-```javascript
-CPU BDD { 'instance_id': 55 }
-```
+## Exécution planifiée
+`npm run schedule-tasks`
