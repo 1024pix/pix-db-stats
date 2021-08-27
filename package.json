@@ -10,6 +10,7 @@
     "metrics": "node ./lib/application/run-task-metrics.js",
     "statements": "node ./lib/application/run-task-statements.js",
     "response-time": "node ./lib/application/run-task-response-time.js",
+    "progress": "node ./lib/application/run-task-progress.js",
     "schedule-tasks": "node ./lib/application/schedule-tasks.js"
   },
   "repository": {
