@@ -9,7 +9,7 @@ function _isFeatureEnabled(valueString) {
 
 module.exports = {
   SCALINGO_REGION: process.env.SCALINGO_REGION,
-  SCALINGO_APP: process.env.SCALINGO_APP,
+  SCALINGO_APPS: JSON.parse(process.env.SCALINGO_APPS || '[]'),
   SCALINGO_TOKEN: process.env.SCALINGO_TOKEN,
   FT_METRICS: _isFeatureEnabled(process.env.FT_METRICS),
   FT_STATEMENTS: _isFeatureEnabled(process.env.FT_STATEMENTS),
