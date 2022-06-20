@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.0.0 (20/06/2022)
+
+
+### :rocket: Amélioration
+- [#13](https://github.com/1024pix/pix-db-stats/pull/13) [FEATURE] Monitore plusieurs applications
+
 
 
 ## v1.0.0 (31/05/2022)

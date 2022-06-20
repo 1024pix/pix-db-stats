@@ -1,6 +1,6 @@
 {
   "name": "pix-db-stats",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Collecte de statistiques sur la base de données Pix",
   "engines": {
     "node": "14.17.0",
