@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.1.0 (07/07/2022)
+
+
+### :rocket: Amélioration
+- [#14](https://github.com/1024pix/pix-db-stats/pull/14) [FEATURE] Ajout des stats d'IO et disk
+
 ## v3.0.0 (20/06/2022)
 
 
