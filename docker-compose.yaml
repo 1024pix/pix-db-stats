@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:13.7-alpine
+    container_name: pix-database-statistics
+    ports:
+      - '${PIX_DATABASE_PORT:-5432}:5432'
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: user
+      POSTGRES_DB: database
