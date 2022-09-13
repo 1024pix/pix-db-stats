@@ -1,5 +1,15 @@
 # pix-db-stats Changelog
 
+## v3.2.0 (13/09/2022)
+
+
+### :rocket: Amélioration
+- [#15](https://github.com/1024pix/pix-db-stats/pull/15) [FEATURE] Ajout d'une licence et ajout d'une description dans le README
+
+### :coffee: Autre
+- [#17](https://github.com/1024pix/pix-db-stats/pull/17) Monitorer le cache hit ratio
+- [#16](https://github.com/1024pix/pix-db-stats/pull/16) [CLEANUP] Utilise l'action commune d'automerge
+
 ## v3.1.0 (07/07/2022)
 
 
