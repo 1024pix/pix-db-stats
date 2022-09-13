@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const { getCacheHit }= require('../../../lib/application/cache-hit')
 const connexionString = 'postgresql://user@localhost:5432/database';
 
-describe('#cacheHit', ()=>{
+describe('#getCacheHit', ()=>{
   it('should return a positive percentage', async ()=>{
     // when
     const result = await getCacheHit(connexionString);
