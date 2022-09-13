@@ -1,0 +1,14 @@
+extends:
+  - 'eslint:recommended'
+  - 'plugin:prettier/recommended'
+  - 'plugin:mocha/recommended'
+
+parserOptions:
+  ecmaVersion: 2020
+  requireConfigFile: false
+env:
+  es6: true
+  node: true
+
+globals:
+  include: true
