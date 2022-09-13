@@ -75,4 +75,6 @@ jobs:
       - run:
           name: Run test
           command: npm run test
+          environment:
+            TEST_DATABASE_URL: postgres://user@localhost:5432/database
 

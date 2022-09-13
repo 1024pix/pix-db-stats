@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { getCacheHit }= require('../../../lib/application/task-cache-hit')
-const connexionString = 'postgresql://user@localhost:5432/database';
+const { TEST_DATABASE_URL : connexionString } = require('../../../config')
 
 describe('#getCacheHit', ()=>{
   it('should return a positive percentage', async ()=>{
