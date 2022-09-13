@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { getCacheHit }= require('../../../lib/application/cache-hit')
+const { getCacheHit }= require('../../../lib/application/task-cache-hit')
 const connexionString = 'postgresql://user@localhost:5432/database';
 
 describe('#getCacheHit', ()=>{
