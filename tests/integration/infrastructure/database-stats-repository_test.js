@@ -9,7 +9,8 @@ describe('database-stats-repository', () => {
           // given
           const scalingoApp = 'application';
           const  getRunningQueriesStub = sinon.stub();
-          getRunningQueriesStub.resolves({ queriesCount: 1})
+          const expected = { queriesCount: 1, longQueriesCount: 0};
+          getRunningQueriesStub.resolves(expected);
           const scalingoApi = { getRunningQueries : getRunningQueriesStub};
 
           // when
@@ -17,7 +18,7 @@ describe('database-stats-repository', () => {
 
           // then
           expect(getRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-          expect(response).to.deep.equal({ queriesCount: 1});
+          expect(response).to.deep.equal(expected);
     });
   });
 });
