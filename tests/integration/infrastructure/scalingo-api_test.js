@@ -162,7 +162,7 @@ describe('scalingo-api', () => {
         });
       });
     });
-    describe('#topNQueries', () => {
+    describe('#NLongestQueries', () => {
       describe('when there is more active than N active queries', () => {
         it('should return only the N longest ones...', async () => {
           // given
@@ -225,7 +225,7 @@ describe('scalingo-api', () => {
           const response = await getRunningQueries(scalingoApp, getCredentials);
 
           // then
-          expect(response.topNQueries).to.deep.equal( [
+          expect(response.NLongestQueries).to.deep.equal( [
             {
               query:
                 'SELECT * FROM users',
@@ -299,7 +299,7 @@ describe('scalingo-api', () => {
           const response = await getRunningQueries(scalingoApp, getCredentials);
 
           // then
-          expect(response.topNQueries).to.deep.equal( [
+          expect(response.NLongestQueries).to.deep.equal( [
             {
               query:
                 'SELECT * FROM users',
