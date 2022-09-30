@@ -5,6 +5,8 @@ const DEFAULT_PROGRESS_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_CACHE_HIT_RATIO_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_RUNNING_QUERIES_SCHEDULE = '*/10 * * * * *';
 const DEFAULT_LONG_RUNNING_QUERY_DURATION_SECONDS = 120;
+const DEFAULT_TOP_N_QUERIES_COUNT = 15;
+
 function _isFeatureEnabled(valueString) {
   return valueString === 'yes';
 }
@@ -28,12 +30,14 @@ const config = {
   RUNNING_QUERIES_SCHEDULE: process.env.RUNNING_QUERIES_SCHEDULE || DEFAULT_RUNNING_QUERIES_SCHEDULE,
   TEST_DATABASE_URL: process.env.TEST_DATABASE_URL,
   LONG_RUNNING_QUERY_DURATION_SECONDS: process.env.LONG_RUNNING_QUERY_DURATION_SECONDS || DEFAULT_LONG_RUNNING_QUERY_DURATION_SECONDS,
+  TOP_N_QUERIES_COUNT : process.env.TOP_N_QUERIES_COUNT | DEFAULT_TOP_N_QUERIES_COUNT
 };
 
 if (process.env.NODE_ENV === 'test') {
   config.SCALINGO_REGION = 'REGION';
   config.SCALINGO_APPS = ['application-1', 'application-2'];
   config.LONG_RUNNING_QUERY_DURATION_SECONDS = 1;
+  config.TOP_N_QUERIES_COUNT = 3;
 }
 
 module.exports = config;
