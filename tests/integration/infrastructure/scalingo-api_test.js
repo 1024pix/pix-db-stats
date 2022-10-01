@@ -5,16 +5,20 @@ const { expect, nock } = require('../../test-helper');
 
 describe('scalingo-api', () => {
   describe('#getRunningQueries', () => {
+    const scalingoApp = 'application';
+    const addonId = 'addonId';
+    const token = 'token';
+    const getCredentials = () => {
+      return { addonId, token };
+    };
+    const baseURL = 'https://db-api.REGION.scalingo.com';
+    const MICROSECONDS_IN_SECONDS = 1 * 10 ** 6;
+    const ONE_SECOND = 1 * MICROSECONDS_IN_SECONDS;
     describe('#queriesCount', () => {
       describe('when there is one running query', () => {
         it('should return 1', async () => {
           // given
-          const addonId = 'addonId';
-          const token = 'token';
-          const getCredentials = () => {
-            return { addonId, token };
-          };
-          const baseURL = 'https://db-api.REGION.scalingo.com';
+
           const queries = [
             {
               query:
@@ -38,7 +42,7 @@ describe('scalingo-api', () => {
           const scalingoResponse = {
             result: queries,
           };
-          const scalingoApp = 'application';
+
           nock(baseURL)
             .post(`/api/databases/${addonId}/action`, {
               action_name: 'pg-list-queries',
@@ -57,15 +61,6 @@ describe('scalingo-api', () => {
       describe('when there is one long running query', () => {
         it('should return it', async () => {
           // given
-          const addonId = 'addonId';
-          const token = 'token';
-          const getCredentials = () => {
-            return { addonId, token };
-          };
-          const baseURL = 'https://db-api.REGION.scalingo.com';
-          const MICROSECONDS_IN_SECONDS = 1 * 10 ** 6;
-          const ONE_SECOND = 1 * MICROSECONDS_IN_SECONDS;
-
           const queries = [
             {
               query:
@@ -90,7 +85,6 @@ describe('scalingo-api', () => {
           const scalingoResponse = {
             result: queries,
           };
-          const scalingoApp = 'application';
           nock(baseURL)
             .post(`/api/databases/${addonId}/action`, {
               action_name: 'pg-list-queries',
@@ -115,14 +109,6 @@ describe('scalingo-api', () => {
       describe('when there is no long running query', () => {
         it('should return an empty array', async () => {
           // given
-          const addonId = 'addonId';
-          const token = 'token';
-          const getCredentials = () => {
-            return { addonId, token };
-          };
-          const baseURL = 'https://db-api.REGION.scalingo.com';
-          const MICROSECONDS_IN_SECONDS = 1 * 10 ** 6;
-          const ONE_SECOND = 1 * MICROSECONDS_IN_SECONDS;
           const queries = [
             {
               query:
@@ -147,7 +133,6 @@ describe('scalingo-api', () => {
           const scalingoResponse = {
             result: queries,
           };
-          const scalingoApp = 'application';
           nock(baseURL)
             .post(`/api/databases/${addonId}/action`, {
               action_name: 'pg-list-queries',
@@ -166,13 +151,6 @@ describe('scalingo-api', () => {
       describe('when there is more active than N active queries', () => {
         it('should return only the N longest ones...', async () => {
           // given
-          const addonId = 'addonId';
-          const token = 'token';
-          const getCredentials = () => {
-            return { addonId, token };
-          };
-          const baseURL = 'https://db-api.REGION.scalingo.com';
-
           const queries = [
             {
               query:
@@ -214,7 +192,6 @@ describe('scalingo-api', () => {
           const scalingoResponse = {
             result: queries,
           };
-          const scalingoApp = 'application';
           nock(baseURL)
             .post(`/api/databases/${addonId}/action`, {
               action_name: 'pg-list-queries',
@@ -258,13 +235,6 @@ describe('scalingo-api', () => {
       describe('when there is less than N active queries', () => {
         it('should return all queries, sorted by descending duration', async () => {
           // given
-          const addonId = 'addonId';
-          const token = 'token';
-          const getCredentials = () => {
-            return { addonId, token };
-          };
-          const baseURL = 'https://db-api.REGION.scalingo.com';
-
           const queries = [
              {
               query:
@@ -288,7 +258,6 @@ describe('scalingo-api', () => {
           const scalingoResponse = {
             result: queries,
           };
-          const scalingoApp = 'application';
           nock(baseURL)
             .post(`/api/databases/${addonId}/action`, {
               action_name: 'pg-list-queries',
@@ -318,6 +287,44 @@ describe('scalingo-api', () => {
               pid: 19297,
               query_duration: 2,
             }]);
+        });
+      });
+      describe('when there is one query whose user should be excluded', () => {
+        it('should return an empty array', async () => {
+          // given
+          const addonId = 'addonId';
+          const token = 'token';
+          const getCredentials = () => {
+            return { addonId, token };
+          };
+          const baseURL = 'https://db-api.REGION.scalingo.com';
+
+          const queries = [
+             {
+              query:
+                'SELECT * FROM users',
+              state: 'active',
+              username: 'admin_patroni',
+              query_start: '2022-09-28T11:20:05.328404Z',
+              pid: 19297,
+              query_duration: 2,
+            }
+          ];
+          const scalingoResponse = {
+            result: queries,
+          };
+          const scalingoApp = 'application';
+          nock(baseURL)
+            .post(`/api/databases/${addonId}/action`, {
+              action_name: 'pg-list-queries',
+            })
+            .reply(200, scalingoResponse);
+
+          // when
+          const response = await getRunningQueries(scalingoApp, getCredentials);
+
+          // then
+          expect(response.topNQueries).to.be.an( "array" ).that.is.empty;
         });
       });
     });
