@@ -58,10 +58,19 @@ describe('scalingo-api', () => {
       });
     });
     describe('#longQueries', () => {
-      describe('when there is one long running query', () => {
+      describe('when there is one long active query', () => {
         it('should return it', async () => {
           // given
           const queries = [
+            {
+              query:
+                'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
+              state: 'idle',
+              username: 'admin',
+              query_start: '2022-09-28T14:20:05.328404Z',
+              pid: 19290,
+              query_duration: ONE_SECOND,
+            },
             {
               query:
                 'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
@@ -152,6 +161,15 @@ describe('scalingo-api', () => {
         it('should return only the N longest ones...', async () => {
           // given
           const queries = [
+            {
+              query:
+                'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
+              state: 'idle',
+              username: 'admin',
+              query_start: '2022-09-28T14:20:05.328404Z',
+              pid: 19291,
+              query_duration: ONE_SECOND,
+            },
             {
               query:
                 'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
@@ -287,44 +305,6 @@ describe('scalingo-api', () => {
               pid: 19297,
               query_duration: 2,
             }]);
-        });
-      });
-      describe('when there is one query whose user should be excluded', () => {
-        it('should return an empty array', async () => {
-          // given
-          const addonId = 'addonId';
-          const token = 'token';
-          const getCredentials = () => {
-            return { addonId, token };
-          };
-          const baseURL = 'https://db-api.REGION.scalingo.com';
-
-          const queries = [
-             {
-              query:
-                'SELECT * FROM users',
-              state: 'active',
-              username: 'admin_patroni',
-              query_start: '2022-09-28T11:20:05.328404Z',
-              pid: 19297,
-              query_duration: 2,
-            }
-          ];
-          const scalingoResponse = {
-            result: queries,
-          };
-          const scalingoApp = 'application';
-          nock(baseURL)
-            .post(`/api/databases/${addonId}/action`, {
-              action_name: 'pg-list-queries',
-            })
-            .reply(200, scalingoResponse);
-
-          // when
-          const response = await getRunningQueries(scalingoApp, getCredentials);
-
-          // then
-          expect(response.topNQueries).to.be.an( "array" ).that.is.empty;
         });
       });
     });
