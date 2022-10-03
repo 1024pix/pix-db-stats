@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.3.0 (03/10/2022)
+
+
+### :coffee: Autre
+- [#21](https://github.com/1024pix/pix-db-stats/pull/21) Suivre les requêtes SQL en cours
+
 ## v3.2.0 (13/09/2022)
 
 
