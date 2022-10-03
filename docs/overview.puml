@@ -1,0 +1,15 @@
+@startuml
+participant pix_db_stats
+participant FS
+participant LogDrain_Scalingo
+participant API_Scalingo
+participant pix_api_production
+participant Datadog
+pix_db_stats -> API_Scalingo : POST /api/databases/${addonId}/action \n { "action_name": "pg-stat-statements-list" }
+API_Scalingo -> pix_api_production : SELECT * FROM pg-stat-statements;
+pix_api_production -> API_Scalingo : (lignes de résultat SQL )
+API_Scalingo -> pix_db_stats : { result: \n   { ...} \n}
+pix_db_stats -> FS : { app: "pix-api-production", \n data:   {...}}
+FS -> LogDrain_Scalingo : { app: "pix-api-production", \n data:   {...}}
+LogDrain_Scalingo -> Datadog : { app: "pix-api-production",\n data:   {...}}
+@enduml
