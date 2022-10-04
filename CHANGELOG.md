@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.3.1 (04/10/2022)
+
+
+### :coffee: Autre
+- [#23](https://github.com/1024pix/pix-db-stats/pull/23) :bug: Les statistiques de requêtes ne sont plus tracées
+
 ## v3.3.0 (03/10/2022)
 
 
