@@ -1,12 +1,13 @@
 require('dotenv').config();
 
+const eachSecond = '* * * * * *';
+
 const DEFAULT_RESPONSE_TIME_QUERY = 'SELECT pg_sleep(1)';
 const DEFAULT_PROGRESS_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_CACHE_HIT_RATIO_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_RUNNING_QUERIES_SCHEDULE = '*/10 * * * * *';
 const DEFAULT_LONG_RUNNING_QUERY_DURATION_SECONDS = 120;
 const DEFAULT_TOP_N_QUERIES_COUNT = 15;
-
 
 function _isFeatureEnabled(valueString) {
   return valueString === 'yes';
@@ -37,6 +38,8 @@ const config = {
 if (process.env.NODE_ENV === 'test') {
   config.SCALINGO_REGION = 'REGION';
   config.SCALINGO_APPS = ['application-1', 'application-2'];
+  config.FT_RUNNING_QUERIES = true;
+  config.RUNNING_QUERIES_SCHEDULE = eachSecond;
   config.LONG_RUNNING_QUERY_DURATION_SECONDS = 1;
   config.TOP_N_QUERIES_COUNT = 3;
 }
