@@ -12,7 +12,7 @@ describe("Integration | schedule-task", () => {
   });
 
   describe("running-queries", () => {
-    it.skip("should extract them periodically, but does not (bug)", () => {
+    it("should extract them periodically", () => {
       // given
       const ONE_SECOND = 1 * 10**3;
       const taskRunningQueries = require("../../../lib/application/task-running-queries");
