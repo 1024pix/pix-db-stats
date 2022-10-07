@@ -1,5 +1,12 @@
 # pix-db-stats Changelog
 
+## v3.4.0 (07/10/2022)
+
+
+### :coffee: Autre
+- [#18](https://github.com/1024pix/pix-db-stats/pull/18) Utiliser la version de node 16.14
+- [#19](https://github.com/1024pix/pix-db-stats/pull/19) Formater automatiquement le code
+
 ## v3.3.2 (07/10/2022)
 
 
