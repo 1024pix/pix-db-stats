@@ -2,14 +2,19 @@
   "name": "pix-db-stats",
   "version": "3.3.2",
   "description": "Collecte de statistiques sur la base de données Pix",
+  "engines": {
+    "node": "16.14.0",
+    "npm": ">=8.3.1 <=8.13.2"
+  },
   "scripts": {
     "lint": "eslint .",
     "metrics": "node ./lib/application/run-task-metrics.js",
-    "statements": "node ./lib/application/run-task-statements.js",
-    "response-time": "node ./lib/application/run-task-response-time.js",
+    "preinstall": "npx check-engine",
     "progress": "node ./lib/application/run-task-progress.js",
+    "response-time": "node ./lib/application/run-task-response-time.js",
     "running-queries": "node ./lib/application/run-task-running-queries.js",
     "schedule-tasks": "node ./lib/application/schedule-tasks.js",
+    "statements": "node ./lib/application/run-task-statements.js",
     "test": "NODE_ENV=test mocha --exit --recursive --reporter=${MOCHA_REPORTER:-dot} tests"
   },
   "repository": {
