@@ -8,6 +8,12 @@ const expect = chai.expect;
 const nock = require('nock');
 nock.disableNetConnect();
 
+afterEach(function () {
+  sinon.restore();
+  nock.cleanAll();
+});
+
+
 module.exports = {
   chai,
   expect,
