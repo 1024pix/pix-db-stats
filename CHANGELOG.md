@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.3.2 (07/10/2022)
+
+
+### :bug: Correction
+- [#25](https://github.com/1024pix/pix-db-stats/pull/25) [BUGFIX] Les requêtes en cours ne sont pas extraites périodiquement
+
 ## v3.3.1 (04/10/2022)
 
 
