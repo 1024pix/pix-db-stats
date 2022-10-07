@@ -2,11 +2,8 @@
   "name": "pix-db-stats",
   "version": "3.3.2",
   "description": "Collecte de statistiques sur la base de données Pix",
-  "engines": {
-    "node": "14.17.0",
-    "npm": "6.14.13"
-  },
   "scripts": {
+    "lint": "eslint .",
     "metrics": "node ./lib/application/run-task-metrics.js",
     "statements": "node ./lib/application/run-task-statements.js",
     "response-time": "node ./lib/application/run-task-response-time.js",
@@ -34,8 +31,13 @@
   },
   "devDependencies": {
     "chai": "^4.3.6",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-mocha": "^10.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "mocha": "^10.0.0",
     "nock": "^13.2.9",
+    "prettier": "^2.7.1",
     "sinon": "^14.0.0",
     "sinon-chai": "^3.7.0"
   }

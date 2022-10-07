@@ -1,9 +1,9 @@
 const { expect } = require('chai');
-const { getCacheHit }= require('../../../lib/application/task-cache-hit')
-const { TEST_DATABASE_URL : connexionString } = require('../../../config')
+const { getCacheHit } = require('../../../lib/application/task-cache-hit');
+const { TEST_DATABASE_URL: connexionString } = require('../../../config');
 
-describe('#getCacheHit', ()=>{
-  it('should return a positive percentage', async ()=>{
+describe('#getCacheHit', function () {
+  it('should return a positive percentage', async function () {
     // when
     const result = await getCacheHit(connexionString);
 
@@ -11,5 +11,5 @@ describe('#getCacheHit', ()=>{
     expect(result).to.be.a('number');
     expect(result).to.be.at.least(0);
     expect(result).to.be.at.most(100);
-  })
+  });
 });

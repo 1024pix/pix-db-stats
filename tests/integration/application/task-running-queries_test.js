@@ -1,16 +1,16 @@
 const taskRunningQueries = require('../../../lib/application/task-running-queries');
 const { expect, sinon } = require('../../test-helper');
 
-describe('task-running-queries', () => {
-  it('should call running queries once for each application', async () => {
+describe('task-running-queries', function () {
+  it('should call running queries once for each application', async function () {
     // given
     const getRunningQueriesStub = sinon.stub();
-    const expected = { queriesCount: 1, longQueriesCount: 0};
+    const expected = { queriesCount: 1, longQueriesCount: 0 };
     getRunningQueriesStub.resolves(expected);
     const databaseStatsRepository = {
       getRunningQueries: getRunningQueriesStub,
     };
-    const scalingoApi = sinon.stub()
+    const scalingoApi = sinon.stub();
 
     // when
     await taskRunningQueries.run(databaseStatsRepository, scalingoApi);

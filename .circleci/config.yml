@@ -73,6 +73,9 @@ jobs:
           paths:
             - ~/.npm
       - run:
+          name: Lint code
+          command: npm run lint
+      - run:
           name: Run test
           command: npm run test
           environment:

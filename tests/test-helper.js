@@ -8,12 +8,13 @@ const expect = chai.expect;
 const nock = require('nock');
 nock.disableNetConnect();
 
+// eslint-disable-next-line mocha/no-top-level-hooks
 afterEach(function () {
   sinon.restore();
   nock.cleanAll();
 });
 
-
+// eslint-disable-next-line mocha/no-exports
 module.exports = {
   chai,
   expect,

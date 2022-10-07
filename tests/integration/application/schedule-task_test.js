@@ -1,27 +1,27 @@
-const { expect, sinon } = require("../../test-helper");
+const { expect, sinon } = require('../../test-helper');
 
-describe("Integration | schedule-task", () => {
+describe('Integration | schedule-task', function () {
   let clock;
 
-  beforeEach(function() {
+  beforeEach(function () {
     clock = sinon.useFakeTimers();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     clock.restore();
   });
 
-  describe("running-queries", () => {
-    it("should extract them periodically", () => {
+  describe('running-queries', function () {
+    it('should extract them periodically', function () {
       // given
-      const ONE_SECOND = 1 * 10**3;
-      const taskRunningQueries = require("../../../lib/application/task-running-queries");
+      const ONE_SECOND = 1 * 10 ** 3;
+      const taskRunningQueries = require('../../../lib/application/task-running-queries');
       const runStub = sinon.stub();
       const run = taskRunningQueries.run;
       taskRunningQueries.run = runStub;
 
       // when
-      require("../../../lib/application/schedule-tasks");
+      require('../../../lib/application/schedule-tasks');
 
       // then
       expect(runStub).to.not.have.been.called;
