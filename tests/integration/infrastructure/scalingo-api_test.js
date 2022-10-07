@@ -1,10 +1,8 @@
-const {
-  getRunningQueries,
-} = require('../../../lib/infrastructure/scalingo-api');
+const { getRunningQueries } = require('../../../lib/infrastructure/scalingo-api');
 const { expect, nock } = require('../../test-helper');
 
-describe('scalingo-api', () => {
-  describe('#getRunningQueries', () => {
+describe('scalingo-api', function () {
+  describe('#getRunningQueries', function () {
     const scalingoApp = 'application';
     const addonId = 'addonId';
     const token = 'token';
@@ -14,9 +12,9 @@ describe('scalingo-api', () => {
     const baseURL = 'https://db-api.REGION.scalingo.com';
     const MICROSECONDS_IN_SECONDS = 1 * 10 ** 6;
     const ONE_SECOND = 1 * MICROSECONDS_IN_SECONDS;
-    describe('#queriesCount', () => {
-      describe('when there is one running query', () => {
-        it('should return 1', async () => {
+    describe('#queriesCount', function () {
+      describe('when there is one running query', function () {
+        it('should return 1', async function () {
           // given
 
           const queries = [
@@ -30,8 +28,7 @@ describe('scalingo-api', () => {
               query_duration: 28787165146,
             },
             {
-              query:
-                'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
+              query: 'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T14:20:05.328404Z',
@@ -57,14 +54,13 @@ describe('scalingo-api', () => {
         });
       });
     });
-    describe('#longQueries', () => {
-      describe('when there is one long active query', () => {
-        it('should return it', async () => {
+    describe('#longQueries', function () {
+      describe('when there is one long active query', function () {
+        it('should return it', async function () {
           // given
           const queries = [
             {
-              query:
-                'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
+              query: 'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
               state: 'idle',
               username: 'admin',
               query_start: '2022-09-28T14:20:05.328404Z',
@@ -72,8 +68,7 @@ describe('scalingo-api', () => {
               query_duration: ONE_SECOND,
             },
             {
-              query:
-                'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
+              query: 'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T14:20:05.328404Z',
@@ -81,15 +76,13 @@ describe('scalingo-api', () => {
               query_duration: 1,
             },
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
               pid: 19297,
               query_duration: ONE_SECOND,
             },
-
           ];
           const scalingoResponse = {
             result: queries,
@@ -104,24 +97,24 @@ describe('scalingo-api', () => {
           const response = await getRunningQueries(scalingoApp, getCredentials);
 
           // then
-          expect(response.longQueries).to.deep.equal( [{
-            query:
-              'SELECT * FROM users',
-            state: 'active',
-            username: 'admin',
-            query_start: '2022-09-28T11:20:05.328404Z',
-            pid: 19297,
-            query_duration: ONE_SECOND,
-          }]);
+          expect(response.longQueries).to.deep.equal([
+            {
+              query: 'SELECT * FROM users',
+              state: 'active',
+              username: 'admin',
+              query_start: '2022-09-28T11:20:05.328404Z',
+              pid: 19297,
+              query_duration: ONE_SECOND,
+            },
+          ]);
         });
       });
-      describe('when there is no long running query', () => {
-        it('should return an empty array', async () => {
+      describe('when there is no long running query', function () {
+        it('should return an empty array', async function () {
           // given
           const queries = [
             {
-              query:
-                'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
+              query: 'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T14:20:05.328404Z',
@@ -129,15 +122,13 @@ describe('scalingo-api', () => {
               query_duration: 1,
             },
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
               pid: 19297,
-              query_duration: ONE_SECOND - 1 ,
+              query_duration: ONE_SECOND - 1,
             },
-
           ];
           const scalingoResponse = {
             result: queries,
@@ -152,18 +143,17 @@ describe('scalingo-api', () => {
           const response = await getRunningQueries(scalingoApp, getCredentials);
 
           // then
-          expect(response.longQueries).to.be.an( "array" ).that.is.empty;
+          expect(response.longQueries).to.be.an('array').that.is.empty;
         });
       });
     });
-    describe('#NLongestQueries', () => {
-      describe('when there is more active than N active queries', () => {
-        it('should return only the N longest ones...', async () => {
+    describe('#NLongestQueries', function () {
+      describe('when there is more active than N active queries', function () {
+        it('should return only the N longest ones...', async function () {
           // given
           const queries = [
             {
-              query:
-                'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
+              query: 'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
               state: 'idle',
               username: 'admin',
               query_start: '2022-09-28T14:20:05.328404Z',
@@ -171,8 +161,7 @@ describe('scalingo-api', () => {
               query_duration: ONE_SECOND,
             },
             {
-              query:
-                'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
+              query: 'SELECT usename, query, state, query_start, pid FROM pg_stat_activity',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T14:20:05.328404Z',
@@ -180,8 +169,7 @@ describe('scalingo-api', () => {
               query_duration: 1,
             },
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
@@ -189,8 +177,7 @@ describe('scalingo-api', () => {
               query_duration: 2,
             },
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
@@ -198,8 +185,7 @@ describe('scalingo-api', () => {
               query_duration: 4,
             },
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
@@ -220,10 +206,9 @@ describe('scalingo-api', () => {
           const response = await getRunningQueries(scalingoApp, getCredentials);
 
           // then
-          expect(response.NLongestQueries).to.deep.equal( [
+          expect(response.NLongestQueries).to.deep.equal([
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
@@ -231,8 +216,7 @@ describe('scalingo-api', () => {
               query_duration: 4,
             },
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
@@ -240,23 +224,22 @@ describe('scalingo-api', () => {
               query_duration: 3,
             },
             {
-            query:
-              'SELECT * FROM users',
-            state: 'active',
-            username: 'admin',
-            query_start: '2022-09-28T11:20:05.328404Z',
-            pid: 19297,
-            query_duration: 2,
-          }]);
+              query: 'SELECT * FROM users',
+              state: 'active',
+              username: 'admin',
+              query_start: '2022-09-28T11:20:05.328404Z',
+              pid: 19297,
+              query_duration: 2,
+            },
+          ]);
         });
       });
-      describe('when there is less than N active queries', () => {
-        it('should return all queries, sorted by descending duration', async () => {
+      describe('when there is less than N active queries', function () {
+        it('should return all queries, sorted by descending duration', async function () {
           // given
           const queries = [
-             {
-              query:
-                'SELECT * FROM users',
+            {
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
@@ -264,8 +247,7 @@ describe('scalingo-api', () => {
               query_duration: 2,
             },
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
@@ -286,10 +268,9 @@ describe('scalingo-api', () => {
           const response = await getRunningQueries(scalingoApp, getCredentials);
 
           // then
-          expect(response.NLongestQueries).to.deep.equal( [
+          expect(response.NLongestQueries).to.deep.equal([
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
@@ -297,14 +278,14 @@ describe('scalingo-api', () => {
               query_duration: 3,
             },
             {
-              query:
-                'SELECT * FROM users',
+              query: 'SELECT * FROM users',
               state: 'active',
               username: 'admin',
               query_start: '2022-09-28T11:20:05.328404Z',
               pid: 19297,
               query_duration: 2,
-            }]);
+            },
+          ]);
         });
       });
     });

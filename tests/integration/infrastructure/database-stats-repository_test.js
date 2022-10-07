@@ -1,12 +1,9 @@
-const {
-  getRunningQueries,
-  getQueryStats,
-} = require('../../../lib/infrastructure/database-stats-repository');
+const { getRunningQueries, getQueryStats } = require('../../../lib/infrastructure/database-stats-repository');
 const { expect, sinon, nock } = require('../../test-helper');
 
-describe('database-stats-repository', () => {
-  describe('#getRunningQueries', () => {
-    it('should call scalingoApi.getRunningQueries and return result', async () => {
+describe('database-stats-repository', function () {
+  describe('#getRunningQueries', function () {
+    it('should call scalingoApi.getRunningQueries and return result', async function () {
       // given
       const scalingoApp = 'application';
       const getRunningQueriesStub = sinon.stub();
@@ -18,15 +15,13 @@ describe('database-stats-repository', () => {
       const response = await getRunningQueries(scalingoApi, scalingoApp);
 
       // then
-      expect(getRunningQueriesStub).to.have.been.calledOnceWithExactly(
-        scalingoApp
-      );
+      expect(getRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
       expect(response).to.deep.equal(expected);
     });
   });
 
-  describe('#getQueryStats', () => {
-    it('should call scalingoApi.getQueryStats and return result', async () => {
+  describe('#getQueryStats', function () {
+    it('should call scalingoApi.getQueryStats and return result', async function () {
       // given
       const queryStats = [
         {
@@ -53,30 +48,26 @@ describe('database-stats-repository', () => {
         },
       ];
 
-      tokenNock = nock(`https://auth.scalingo.com`)
-        .post('/v1/tokens/exchange')
-        .reply(200, {
-          token: 'myfaketoken',
-        });
+      const tokenNock = nock(`https://auth.scalingo.com`).post('/v1/tokens/exchange').reply(200, {
+        token: 'myfaketoken',
+      });
 
-      addonIdNock = nock(`https://api.REGION.scalingo.com`)
+      const addonIdNock = nock(`https://api.REGION.scalingo.com`)
         .get('/v1/apps/application-1/addons')
         .reply(200, {
           addons: [{ id: 'addonid', addon_provider: { id: 'postgresql' } }],
         });
 
-      addonTokenNock = nock('https://api.REGION.scalingo.com')
+      const addonTokenNock = nock('https://api.REGION.scalingo.com')
         .post('/v1/apps/application-1/addons/addonid/token')
         .reply(200, {
           addon: { token: 'myfaketoken' },
         });
 
-      statsNock = nock(`https://db-api.REGION.scalingo.com`)
-        .post('/api/databases/addonid/action')
-        .reply(200, {
-          ok: 1,
-          result: queryStats,
-        });
+      const statsNock = nock(`https://db-api.REGION.scalingo.com`).post('/api/databases/addonid/action').reply(200, {
+        ok: 1,
+        result: queryStats,
+      });
 
       const scalingoApp = 'application-1';
 
