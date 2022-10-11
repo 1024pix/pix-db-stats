@@ -26,7 +26,6 @@ describe('#logCacheHits', function () {
     try {
       await logCacheHits();
     } catch (error) {
-      console.log(error);
       hasThrown = true;
     }
     // then
