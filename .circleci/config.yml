@@ -25,32 +25,9 @@ workflows:
   version: 2
   test:
     jobs:
-      - checkout:
-          filters:
-            branches:
-              ignore:
-                - master
-
-      - build_and_test:
-          requires:
-            - checkout
+      - build_and_test
 
 jobs:
-  checkout:
-    docker:
-      - image: cimg/node:16.14.0
-    working_directory: ~/pix-db-stats
-    steps:
-      - checkout
-      - run:
-          command: |
-            npm ci
-            rm -rf .git/
-      - persist_to_workspace:
-          root: ~/pix-db-stats
-          paths:
-            - .
-
   build_and_test:
     docker:
       - image: cimg/node:16.14.0
@@ -61,8 +38,7 @@ jobs:
           POSTGRES_DB: database
     working_directory: ~/pix-db-stats
     steps:
-      - attach_workspace:
-          at: ~/pix-db-stats
+      - checkout
       - run: cat package*.json > cachekey
       - restore_cache:
           keys:
@@ -80,4 +56,3 @@ jobs:
           command: npm run test
           environment:
             TEST_DATABASE_URL: postgres://user@localhost:5432/database
-
