@@ -11,14 +11,14 @@ describe('Integration | schedule-task', function () {
     clock.restore();
   });
 
-  describe('running-queries', function () {
+  describe('queries-metric', function () {
     it('should extract them periodically', function () {
       // given
       const ONE_SECOND = 1 * 10 ** 3;
-      const taskRunningQueries = require('../../../lib/application/task-running-queries');
+      const taskQueriesMetric = require('../../../lib/application/task-queries-metric');
       const runStub = sinon.stub();
-      const run = taskRunningQueries.run;
-      taskRunningQueries.run = runStub;
+      const run = taskQueriesMetric.run;
+      taskQueriesMetric.run = runStub;
 
       // when
       require('../../../lib/application/schedule-tasks');
@@ -37,7 +37,7 @@ describe('Integration | schedule-task', function () {
 
       // then
       expect(runStub).to.have.been.calledOnce;
-      taskRunningQueries.run = run;
+      taskQueriesMetric.run = run;
     });
   });
 });

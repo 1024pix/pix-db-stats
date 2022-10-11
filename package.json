@@ -11,8 +11,8 @@
     "metrics": "node ./lib/application/run-task-metrics.js",
     "preinstall": "npx check-engine",
     "progress": "node ./lib/application/run-task-progress.js",
+    "queries-metric": "node ./lib/application/run-task-queries-metric.js",
     "response-time": "node ./lib/application/run-task-response-time.js",
-    "running-queries": "node ./lib/application/run-task-running-queries.js",
     "schedule-tasks": "node ./lib/application/schedule-tasks.js",
     "statements": "node ./lib/application/run-task-statements.js",
     "test": "NODE_ENV=test mocha --exit --recursive --reporter=${MOCHA_REPORTER:-dot} tests"
@@ -21,21 +21,21 @@
     "type": "git",
     "url": "git+https://github.com/1024pix/pix-db-stats.git"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "AGPL-3.0",
+  "author": "GIP Pix",
   "bugs": {
     "url": "https://github.com/1024pix/pix-db-stats/issues"
   },
   "homepage": "https://github.com/1024pix/pix-db-stats#readme",
   "dependencies": {
     "axios": "^0.21.1",
-    "chai-as-promised": "^7.1.1",
     "cron": "^2.1.0",
     "dotenv": "^10.0.0",
     "pg": "^8.6.0"
   },
   "devDependencies": {
     "chai": "^4.3.6",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^8.23.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-mocha": "^10.1.0",
