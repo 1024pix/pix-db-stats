@@ -1,5 +1,14 @@
 # pix-db-stats Changelog
 
+## v3.5.0 (11/10/2022)
+
+
+### :rocket: Amélioration
+- [#27](https://github.com/1024pix/pix-db-stats/pull/27) [FEATURE] Renomme la tache running-queries en queries-metric
+
+### :coffee: Autre
+- [#28](https://github.com/1024pix/pix-db-stats/pull/28) [CLEANUP] Simplifie la config circleci
+
 ## v3.4.0 (07/10/2022)
 
 
