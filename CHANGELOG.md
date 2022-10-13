@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.6.0 (13/10/2022)
+
+
+### :bug: Correction
+- [#26](https://github.com/1024pix/pix-db-stats/pull/26) [BUGFIX] Le conteneur s'arrête si Scalingo renvoie une erreur
+
 ## v3.5.0 (11/10/2022)
 
 
