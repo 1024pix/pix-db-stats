@@ -1,4 +1,4 @@
-const { getAddons, getRunningQueries } = require('../../../lib/infrastructure/scalingo-api');
+const { getDbMetrics, getAddons, getRunningQueries } = require('../../../lib/infrastructure/scalingo-api');
 const { expect, nock } = require('../../test-helper');
 
 describe('scalingo-api', function () {
@@ -23,6 +23,40 @@ describe('scalingo-api', function () {
       // then
       expect(nock.isDone()).to.be.true;
       expect(addonsResponse).to.deep.equal(addons);
+    });
+  });
+
+  describe('#getDbMetrics', function () {
+    it('should call the db metrics API', async function () {
+      // given
+      const application = 'my-application';
+      const addonId = 'my-addon-id';
+      const expectedMetrics = { cpu_usage: 0 };
+
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .post(`/apps/${application}/addons/${addonId}/token`)
+        .reply(200, { addon: { token: 'my-database-token' } });
+
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
+        .get(`/api/databases/${addonId}/metrics`)
+        .reply(200, expectedMetrics);
+
+      // when
+      const metrics = await getDbMetrics(application, addonId);
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(metrics).to.eql(expectedMetrics);
     });
   });
 

@@ -1,5 +1,6 @@
 const {
   getAvailableDatabases,
+  getDBMetrics,
   getQueriesMetric,
   getQueryStats,
 } = require('../../../lib/infrastructure/database-stats-repository');
@@ -10,8 +11,7 @@ describe('database-stats-repository', function () {
     it('should call scalingoApi.getAddons and return the postgres addon', async function () {
       // given
       const scalingoApp = 'my-application';
-      const getAddons = sinon.stub();
-      getAddons.resolves([
+      const getAddonsStub = sinon.stub().resolves([
         {
           id: '5415beca646173000b015000',
           addon_provider: {
@@ -25,14 +25,45 @@ describe('database-stats-repository', function () {
           },
         },
       ]);
-      const scalingoApi = { getAddons };
+      const scalingoApi = { getAddons: getAddonsStub };
 
       // when
       const databases = await getAvailableDatabases(scalingoApi, scalingoApp);
 
       // then
-      expect(getAddons).to.have.been.calledOnceWithExactly(scalingoApp);
+      expect(getAddonsStub).to.have.been.calledOnceWithExactly(scalingoApp);
       expect(databases).to.eql([{ name: 'postgresql', id: '5415beca646173000b015000' }]);
+    });
+  });
+
+  describe('#getDbMetrics', function () {
+    it('should call scalingoApi.getDbMetrics and return them', async function () {
+      // given
+      const scalingoApp = 'my-application';
+      const addonId = 'my-addon-id';
+      const expectedMetrics = {
+        cpu_usage: 0,
+        memory: {
+          memory: 156426240,
+          memory_max: 222314496,
+          memory_limit: 536870912,
+          swap: 20480,
+          swap_max: 0,
+          swap_limit: 536870912,
+        },
+        database_stats: {
+          data_size: 11044896,
+        },
+      };
+      const getDbMetricsStub = sinon.stub().resolves(expectedMetrics);
+      const scalingoApi = { getDbMetrics: getDbMetricsStub };
+
+      // when
+      const metrics = await getDBMetrics(scalingoApi, scalingoApp, addonId);
+
+      // then
+      expect(getDbMetricsStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId);
+      expect(metrics).to.eql(expectedMetrics);
     });
   });
 
