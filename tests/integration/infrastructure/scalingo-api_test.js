@@ -1,7 +1,31 @@
-const { getRunningQueries } = require('../../../lib/infrastructure/scalingo-api');
+const { getAddons, getRunningQueries } = require('../../../lib/infrastructure/scalingo-api');
 const { expect, nock } = require('../../test-helper');
 
 describe('scalingo-api', function () {
+  describe('#getAddons', function () {
+    it('should returns addons of an application', async function () {
+      // given
+      const application = 'my-application';
+      const addons = [];
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .get(`/apps/${application}/addons`)
+        .reply(200, { addons });
+
+      // when
+      const addonsResponse = await getAddons(application);
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(addonsResponse).to.deep.equal(addons);
+    });
+  });
+
   describe('#getRunningQueries', function () {
     const scalingoApp = 'application';
     const addonId = 'addonId';

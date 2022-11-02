@@ -1,7 +1,41 @@
-const { getQueriesMetric, getQueryStats } = require('../../../lib/infrastructure/database-stats-repository');
+const {
+  getAvailableDatabases,
+  getQueriesMetric,
+  getQueryStats,
+} = require('../../../lib/infrastructure/database-stats-repository');
 const { expect, sinon, nock } = require('../../test-helper');
 
 describe('database-stats-repository', function () {
+  describe('#getAvailableDatabases', function () {
+    it('should call scalingoApi.getAddons and return the postgres addon', async function () {
+      // given
+      const scalingoApp = 'my-application';
+      const getAddons = sinon.stub();
+      getAddons.resolves([
+        {
+          id: '5415beca646173000b015000',
+          addon_provider: {
+            id: 'postgresql',
+          },
+        },
+        {
+          id: '5415beca646173000b015001',
+          addon_provider: {
+            id: 'redis',
+          },
+        },
+      ]);
+      const scalingoApi = { getAddons };
+
+      // when
+      const databases = await getAvailableDatabases(scalingoApi, scalingoApp);
+
+      // then
+      expect(getAddons).to.have.been.calledOnceWithExactly(scalingoApp);
+      expect(databases).to.eql([{ name: 'postgresql', id: '5415beca646173000b015000' }]);
+    });
+  });
+
   describe('#getQueriesMetric', function () {
     it('should call scalingoApi.getRunningQueries and return and count number of active queries', async function () {
       // given
