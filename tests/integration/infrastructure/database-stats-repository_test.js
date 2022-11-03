@@ -5,6 +5,7 @@ const {
   getQueryStats,
   getDatabaseLeaderNodeId,
   getDBDisk,
+  getDBDiskIO,
 } = require('../../../lib/infrastructure/database-stats-repository');
 const { expect, sinon, nock } = require('../../test-helper');
 
@@ -112,7 +113,7 @@ describe('database-stats-repository', function () {
     });
   });
 
-  describe('#getDbDisk', function () {
+  describe('#getDBDisk', function () {
     it('should call scalingoApi.getDbDisk and returns disk_total and disk_used', async function () {
       // given
       const scalingoApp = 'application';
@@ -128,6 +129,26 @@ describe('database-stats-repository', function () {
 
       // then
       expect(getDbDiskStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, leaderNodeId);
+      expect(response).to.deep.equal(expected);
+    });
+  });
+
+  describe('#getDBDiskIo', function () {
+    it('should call scalingoApi.getDbDiskIO and returns diskio_reads and diskio_writes', async function () {
+      // given
+      const scalingoApp = 'application';
+      const addonId = 'my-addon-id';
+      const leaderNodeId = 'my-leader-node-id';
+      const getDbDiskIOStub = sinon.stub();
+      const expected = { diskio_reads: 120, diskio_writes: 10 };
+      getDbDiskIOStub.resolves(expected);
+      const scalingoApi = { getDbDiskIO: getDbDiskIOStub };
+
+      // when
+      const response = await getDBDiskIO(scalingoApi, scalingoApp, addonId, leaderNodeId);
+
+      // then
+      expect(getDbDiskIOStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, leaderNodeId);
       expect(response).to.deep.equal(expected);
     });
   });
