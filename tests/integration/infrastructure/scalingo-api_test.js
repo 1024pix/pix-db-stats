@@ -2,7 +2,7 @@ const {
   getDbMetrics,
   getAddons,
   getInstancesStatus,
-  getRunningQueries,
+  getPgRunningQueries,
   getDbDisk,
   getDbDiskIO,
 } = require('../../../lib/infrastructure/scalingo-api');
@@ -173,7 +173,7 @@ describe('scalingo-api', function () {
     });
   });
 
-  describe('#getRunningQueries', function () {
+  describe('#getPgRunningQueries', function () {
     const scalingoApp = 'application';
     const addonId = 'addonId';
     const token = 'token';
@@ -214,7 +214,7 @@ describe('scalingo-api', function () {
         .reply(200, scalingoResponse);
 
       // when
-      const stats = await getRunningQueries(scalingoApp, getCredentials);
+      const stats = await getPgRunningQueries(scalingoApp, getCredentials);
 
       // then
       expect(stats).to.deep.equal(scalingoResponse);

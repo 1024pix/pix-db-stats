@@ -1,13 +1,13 @@
 const taskQueriesMetric = require('../../../lib/application/task-queries-metric');
 const { expect, sinon, nock } = require('../../test-helper');
 
-describe('task-queries-metric', function () {
+describe('#task-queries-metric', function () {
   it('should call queries metric once for each application', async function () {
     // given
     const expected = { queriesCount: 1 };
-    const getQueriesMetricStub = sinon.stub().resolves(expected);
+    const getPgQueriesMetricStub = sinon.stub().resolves(expected);
     const databaseStatsRepository = {
-      getQueriesMetric: getQueriesMetricStub,
+      getPgQueriesMetric: getPgQueriesMetricStub,
     };
     const scalingoApi = sinon.stub();
 
@@ -15,21 +15,19 @@ describe('task-queries-metric', function () {
     await taskQueriesMetric.run(databaseStatsRepository, scalingoApi);
 
     // then
-    expect(getQueriesMetricStub.firstCall.args[0]).to.equal(scalingoApi);
-    expect(getQueriesMetricStub.firstCall.args[1]).to.equal('application-1');
-    expect(getQueriesMetricStub.secondCall.args[0]).to.equal(scalingoApi);
-    expect(getQueriesMetricStub.secondCall.args[1]).to.equal('application-2');
+    expect(getPgQueriesMetricStub.firstCall.args[0]).to.equal(scalingoApi);
+    expect(getPgQueriesMetricStub.firstCall.args[1]).to.equal('application-1');
+    expect(getPgQueriesMetricStub.secondCall.args[0]).to.equal(scalingoApi);
+    expect(getPgQueriesMetricStub.secondCall.args[1]).to.equal('application-2');
   });
-});
-describe('#task-queries-metric', function () {
+
   it('should not throw an error when API Scalingo fails', async function () {
     let hasThrown = false;
     // given
-    const getQueriesMetricStub = sinon.stub();
-    const expected = { queriesCount: 1, longQueriesCount: 0 };
-    getQueriesMetricStub.resolves(expected);
+    const expected = { queriesCount: 1 };
+    const getPgQueriesMetricStub = sinon.stub().resolves(expected);
     const databaseStatsRepository = {
-      getRunningQueries: getQueriesMetricStub,
+      getPgQueriesMetric: getPgQueriesMetricStub,
     };
     const scalingoApi = sinon.stub();
     // when

@@ -1,8 +1,8 @@
 const {
   getAvailableDatabases,
   getDBMetrics,
-  getQueriesMetric,
-  getQueryStats,
+  getPgQueriesMetric,
+  getPgQueryStats,
   getDatabaseLeaderNodeId,
   getDBDisk,
   getDBDiskIO,
@@ -153,13 +153,13 @@ describe('database-stats-repository', function () {
     });
   });
 
-  describe('#getQueriesMetric', function () {
-    it('should call scalingoApi.getRunningQueries and return and count number of active queries', async function () {
+  describe('#getPgQueriesMetric', function () {
+    it('should call scalingoApi.getPgRunningQueries and return and count number of active queries', async function () {
       // given
       const scalingoApp = 'application';
-      const getRunningQueriesStub = sinon.stub();
+      const getPgRunningQueriesStub = sinon.stub();
       const expected = { activeQueriesCount: 1 };
-      getRunningQueriesStub.resolves({
+      getPgRunningQueriesStub.resolves({
         result: [
           {
             state: 'active',
@@ -169,19 +169,19 @@ describe('database-stats-repository', function () {
           },
         ],
       });
-      const scalingoApi = { getRunningQueries: getRunningQueriesStub };
+      const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
 
       // when
-      const response = await getQueriesMetric(scalingoApi, scalingoApp);
+      const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
 
       // then
-      expect(getRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+      expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
       expect(response).to.deep.equal(expected);
     });
   });
 
-  describe('#getQueryStats', function () {
-    it('should call scalingoApi.getQueryStats and return result', async function () {
+  describe('#getPgQueryStats', function () {
+    it('should call scalingoApi.getPgQueryStats and return result', async function () {
       // given
       const queryStats = [
         {
@@ -232,7 +232,7 @@ describe('database-stats-repository', function () {
       const scalingoApp = 'application-1';
 
       // when
-      const response = await getQueryStats(scalingoApp);
+      const response = await getPgQueryStats(scalingoApp);
 
       // then
       expect(tokenNock.calledOnceWithExactly);
