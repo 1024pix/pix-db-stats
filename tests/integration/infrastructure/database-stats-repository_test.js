@@ -27,6 +27,12 @@ describe('database-stats-repository', function () {
             id: 'redis',
           },
         },
+        {
+          id: '5415beca646173000b015002',
+          addon_provider: {
+            id: 'other',
+          },
+        },
       ]);
       const scalingoApi = { getAddons: getAddonsStub };
 
@@ -35,7 +41,10 @@ describe('database-stats-repository', function () {
 
       // then
       expect(getAddonsStub).to.have.been.calledOnceWithExactly(scalingoApp);
-      expect(databases).to.eql([{ name: 'postgresql', id: '5415beca646173000b015000' }]);
+      expect(databases).to.eql([
+        { name: 'postgresql', id: '5415beca646173000b015000' },
+        { name: 'redis', id: '5415beca646173000b015001' },
+      ]);
     });
   });
 
