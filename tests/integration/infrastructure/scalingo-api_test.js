@@ -3,6 +3,7 @@ const {
   getAddons,
   getInstancesStatus,
   getRunningQueries,
+  getDbDisk,
 } = require('../../../lib/infrastructure/scalingo-api');
 const { expect, nock } = require('../../test-helper');
 
@@ -96,6 +97,42 @@ describe('scalingo-api', function () {
       // then
       expect(nock.isDone()).to.be.true;
       expect(instancesStatus).to.eql(expectedStatus);
+    });
+  });
+
+  describe('#getDbDisk', function () {
+    it('should call the getDbDisk API', async function () {
+      // given
+      const application = 'my-application';
+      const addonId = 'my-addon-id';
+      const leaderNodeId = 'my-leader-id';
+      const expectedMetrics = [{ id: '1' }];
+
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .post(`/apps/${application}/addons/${addonId}/token`)
+        .reply(200, { addon: { token: 'my-database-token' } });
+
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
+        .get(`/api/databases/${addonId}/instances/${leaderNodeId}/metrics/disk`)
+        .query({ since: 3, last: true })
+        .reply(200, { disk_metrics: [expectedMetrics] });
+
+      // when
+      const metrics = await getDbDisk(application, addonId, leaderNodeId);
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(metrics).to.eql(expectedMetrics);
     });
   });
 

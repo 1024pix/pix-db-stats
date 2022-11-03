@@ -4,6 +4,7 @@ const {
   getQueriesMetric,
   getQueryStats,
   getDatabaseLeaderNodeId,
+  getDBDisk,
 } = require('../../../lib/infrastructure/database-stats-repository');
 const { expect, sinon, nock } = require('../../test-helper');
 
@@ -108,6 +109,26 @@ describe('database-stats-repository', function () {
       // then
       expect(getInstancesStatusStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId);
       expect(metrics).to.eql('a541dfb5-1fa6-40d7-87de-159ab721322c');
+    });
+  });
+
+  describe('#getDbDisk', function () {
+    it('should call scalingoApi.getDbDisk and returns disk_total and disk_used', async function () {
+      // given
+      const scalingoApp = 'application';
+      const addonId = 'my-addon-id';
+      const leaderNodeId = 'my-leader-node-id';
+      const getDbDiskStub = sinon.stub();
+      const expected = { disk_total: 120, disk_used: 10 };
+      getDbDiskStub.resolves(expected);
+      const scalingoApi = { getDbDisk: getDbDiskStub };
+
+      // when
+      const response = await getDBDisk(scalingoApi, scalingoApp, addonId, leaderNodeId);
+
+      // then
+      expect(getDbDiskStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, leaderNodeId);
+      expect(response).to.deep.equal(expected);
     });
   });
 
