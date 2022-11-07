@@ -1,8 +1,179 @@
-const { getRunningQueries } = require('../../../lib/infrastructure/scalingo-api');
+const {
+  getDbMetrics,
+  getAddons,
+  getInstancesStatus,
+  getPgRunningQueries,
+  getDbDisk,
+  getDbDiskIO,
+} = require('../../../lib/infrastructure/scalingo-api');
 const { expect, nock } = require('../../test-helper');
 
 describe('scalingo-api', function () {
-  describe('#getRunningQueries', function () {
+  describe('#getAddons', function () {
+    it('should returns addons of an application', async function () {
+      // given
+      const application = 'my-application';
+      const addons = [];
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .get(`/apps/${application}/addons`)
+        .reply(200, { addons });
+
+      // when
+      const addonsResponse = await getAddons(application);
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(addonsResponse).to.deep.equal(addons);
+    });
+  });
+
+  describe('#getDbMetrics', function () {
+    it('should call the db metrics API', async function () {
+      // given
+      const application = 'my-application';
+      const addonId = 'my-addon-id';
+      const expectedMetrics = { cpu_usage: 0 };
+
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .post(`/apps/${application}/addons/${addonId}/token`)
+        .reply(200, { addon: { token: 'my-database-token' } });
+
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
+        .get(`/api/databases/${addonId}/metrics`)
+        .reply(200, expectedMetrics);
+
+      // when
+      const metrics = await getDbMetrics(application, addonId);
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(metrics).to.eql(expectedMetrics);
+    });
+  });
+
+  describe('#getInstancesStatus', function () {
+    it('should call the instances status API', async function () {
+      // given
+      const application = 'my-application';
+      const addonId = 'my-addon-id';
+      const expectedStatus = [{ id: '1' }];
+
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .post(`/apps/${application}/addons/${addonId}/token`)
+        .reply(200, { addon: { token: 'my-database-token' } });
+
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
+        .get(`/api/databases/${addonId}/instances_status`)
+        .reply(200, expectedStatus);
+
+      // when
+      const instancesStatus = await getInstancesStatus(application, addonId);
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(instancesStatus).to.eql(expectedStatus);
+    });
+  });
+
+  describe('#getDbDisk', function () {
+    it('should call the getDbDisk API', async function () {
+      // given
+      const application = 'my-application';
+      const addonId = 'my-addon-id';
+      const leaderNodeId = 'my-leader-id';
+      const expectedMetrics = [{ id: '1' }];
+
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .post(`/apps/${application}/addons/${addonId}/token`)
+        .reply(200, { addon: { token: 'my-database-token' } });
+
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
+        .get(`/api/databases/${addonId}/instances/${leaderNodeId}/metrics/disk`)
+        .query({ since: 3, last: true })
+        .reply(200, { disk_metrics: [expectedMetrics] });
+
+      // when
+      const metrics = await getDbDisk(application, addonId, leaderNodeId);
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(metrics).to.eql(expectedMetrics);
+    });
+  });
+
+  describe('#getDbDiskIO', function () {
+    it('should call the getDbDiskIO API', async function () {
+      // given
+      const application = 'my-application';
+      const addonId = 'my-addon-id';
+      const leaderNodeId = 'my-leader-id';
+      const expectedMetrics = [{ id: '1' }];
+
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .post(`/apps/${application}/addons/${addonId}/token`)
+        .reply(200, { addon: { token: 'my-database-token' } });
+
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
+        .get(`/api/databases/${addonId}/instances/${leaderNodeId}/metrics/diskio`)
+        .query({ since: 3, last: true })
+        .reply(200, { diskio_metrics: [expectedMetrics] });
+
+      // when
+      const metrics = await getDbDiskIO(application, addonId, leaderNodeId);
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(metrics).to.eql(expectedMetrics);
+    });
+  });
+
+  describe('#getPgRunningQueries', function () {
     const scalingoApp = 'application';
     const addonId = 'addonId';
     const token = 'token';
@@ -43,7 +214,7 @@ describe('scalingo-api', function () {
         .reply(200, scalingoResponse);
 
       // when
-      const stats = await getRunningQueries(scalingoApp, getCredentials);
+      const stats = await getPgRunningQueries(scalingoApp, getCredentials);
 
       // then
       expect(stats).to.deep.equal(scalingoResponse);
