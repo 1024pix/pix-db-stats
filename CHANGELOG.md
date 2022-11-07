@@ -1,5 +1,14 @@
 # pix-db-stats Changelog
 
+## v3.8.0 (07/11/2022)
+
+
+### :rocket: Amélioration
+- [#32](https://github.com/1024pix/pix-db-stats/pull/32) [FEATURE] Ajout du monitoring redis
+
+### :coffee: Autre
+- [#29](https://github.com/1024pix/pix-db-stats/pull/29) [CLEANUP] Refactoring de l'ordonnancement des taches
+
 ## v3.7.0 (07/11/2022)
 
 
