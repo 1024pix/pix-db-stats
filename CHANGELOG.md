@@ -1,5 +1,15 @@
 # pix-db-stats Changelog
 
+## v3.7.0 (07/11/2022)
+
+
+### :rocket: Amélioration
+- [#33](https://github.com/1024pix/pix-db-stats/pull/33) [FEATURE] Monitorer les métriques du leader BDD
+
+### :coffee: Autre
+- [#31](https://github.com/1024pix/pix-db-stats/pull/31) Revert "Suppression de l'évènement leader-cpu"
+- [#30](https://github.com/1024pix/pix-db-stats/pull/30) Suppression de l'évènement leader-cpu
+
 ## v3.6.0 (13/10/2022)
 
 
