@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.9.0 (09/11/2022)
+
+
+### :bug: Correction
+- [#34](https://github.com/1024pix/pix-db-stats/pull/34) [BUGFIX] Ne crashe pas si l'erreur n'a pas le format attendu
+
 ## v3.8.0 (07/11/2022)
 
 
