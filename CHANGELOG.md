@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.9.1 (14/11/2022)
+
+
+### :bug: Correction
+- [#36](https://github.com/1024pix/pix-db-stats/pull/36) [BUGFIX] Corrige le crash en cas d'erreurs lors de la récupération des metrics
+
 ## v3.9.0 (09/11/2022)
 
 
