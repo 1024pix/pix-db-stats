@@ -1,5 +1,12 @@
 # pix-db-stats Changelog
 
+## v3.10.0 (05/12/2022)
+
+
+### :rocket: Amélioration
+- [#35](https://github.com/1024pix/pix-db-stats/pull/35) [FEATURE] Envoi un seul événement db-metrics avec les informations du leader, son disque et les IO
+- [#37](https://github.com/1024pix/pix-db-stats/pull/37) [FEATURE] Ajout de l'attribut database sur tous les logs
+
 ## v3.9.1 (14/11/2022)
 
 
