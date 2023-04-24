@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.11.0 (24/04/2023)
+
+
+### :building_construction: Tech
+- [#38](https://github.com/1024pix/pix-db-stats/pull/38) [TECH] Mise à jour vers node 18
+
 ## v3.10.0 (05/12/2022)
 
 
