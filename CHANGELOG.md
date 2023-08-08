@@ -1,5 +1,24 @@
 # pix-db-stats Changelog
 
+## v3.12.0 (08/08/2023)
+
+
+### :building_construction: Tech
+- [#39](https://github.com/1024pix/pix-db-stats/pull/39) [TECH] Mettre à jour les dépendances automatiquement.
+
+### :arrow_up: Montée de version
+- [#56](https://github.com/1024pix/pix-db-stats/pull/56) [BUMP] Update node.
+- [#62](https://github.com/1024pix/pix-db-stats/pull/62) [BUMP] Lock file maintenance (dossier racine).
+- [#61](https://github.com/1024pix/pix-db-stats/pull/61) [BUMP] Update postgres Docker tag to v14.8.
+- [#60](https://github.com/1024pix/pix-db-stats/pull/60) [BUMP] Lock file maintenance (dossier racine).
+- [#55](https://github.com/1024pix/pix-db-stats/pull/55) [BUMP] Lock file maintenance (dossier racine).
+- [#54](https://github.com/1024pix/pix-db-stats/pull/54) [BUMP] Update dependency prettier to v3 (dossier racine).
+- [#53](https://github.com/1024pix/pix-db-stats/pull/53) [BUMP] Update dependency node to v18.16.1.
+- [#48](https://github.com/1024pix/pix-db-stats/pull/48) [BUMP] Update Node.js to v18.16.1.
+- [#47](https://github.com/1024pix/pix-db-stats/pull/47) [BUMP] Lock file maintenance (dossier racine).
+- [#46](https://github.com/1024pix/pix-db-stats/pull/46) [BUMP] Lock file maintenance (dossier racine).
+- [#43](https://github.com/1024pix/pix-db-stats/pull/43) [BUMP] Update node (major).
+
 ## v3.11.0 (24/04/2023)
 
 
