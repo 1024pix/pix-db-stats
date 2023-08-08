@@ -3,7 +3,7 @@
   "version": "3.11.0",
   "description": "Collecte de statistiques sur la base de données Pix",
   "engines": {
-    "node": "18.16.x",
+    "node": "18.17.x",
     "npm": "9.x.x"
   },
   "scripts": {
