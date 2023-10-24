@@ -153,7 +153,7 @@ describe('database-stats-repository', function () {
     const activeQuery = {
       state: 'active',
       query: 'SELECT TOTO',
-      query_duration: 3000000,
+      query_duration: 6 * 60 * 10 ** 9,
     };
 
     describe('Given running query with less than 250', function () {
@@ -232,7 +232,7 @@ describe('database-stats-repository', function () {
       // given
       const scalingoApp = 'application';
       const getPgRunningQueriesStub = sinon.stub();
-      const expected = { activeQueriesCount: 1, slowQueries: [{ query: 'SELECT TOTO', duration: 3000000 }] };
+      const expected = { activeQueriesCount: 1, slowQueries: [{ query: 'SELECT TOTO', duration: 360000000000 }] };
       getPgRunningQueriesStub.resolves({
         result: [activeQuery, idleQuery],
       });
