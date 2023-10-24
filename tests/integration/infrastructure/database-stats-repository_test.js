@@ -149,14 +149,16 @@ describe('database-stats-repository', function () {
       // given
       const scalingoApp = 'application';
       const getPgRunningQueriesStub = sinon.stub();
-      const expected = { activeQueriesCount: 1 };
+      const expected = { activeQueriesCount: 1, queries: [{ query: 'SELECT TOTO' }] };
       getPgRunningQueriesStub.resolves({
         result: [
           {
             state: 'active',
+            query: 'SELECT TOTO',
           },
           {
             state: 'idle',
+            query: 'SELECT PASBON',
           },
         ],
       });
