@@ -145,23 +145,25 @@ describe('database-stats-repository', function () {
   });
 
   describe('#getPgQueriesMetric', function () {
+    const idleQuery = {
+      state: 'idle',
+      query: 'SELECT PASBON',
+      query_duration: 100,
+    };
+    const activeQuery = {
+      state: 'active',
+      query: 'SELECT TOTO',
+      query_duration: 3000000,
+    };
+
     describe('Given running query with less than 250', function () {
       it('should not truncate the returned query', async function () {
         // given
         const scalingoApp = 'application';
         const getPgRunningQueriesStub = sinon.stub();
-        const expected = { activeQueriesCount: 1, queries: [{ query: 'S'.repeat(249) }] };
+        const expected = 'S'.repeat(249);
         getPgRunningQueriesStub.resolves({
-          result: [
-            {
-              state: 'active',
-              query: 'S'.repeat(249),
-            },
-            {
-              state: 'idle',
-              query: 'SELECT PASBON',
-            },
-          ],
+          result: [{ ...activeQuery, query: 'S'.repeat(249) }, idleQuery],
         });
         const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
 
@@ -170,7 +172,7 @@ describe('database-stats-repository', function () {
 
         // then
         expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-        expect(response).to.deep.equal(expected);
+        expect(response.queries[0].query).to.equal(expected);
       });
     });
 
@@ -179,17 +181,14 @@ describe('database-stats-repository', function () {
         // given
         const scalingoApp = 'application';
         const getPgRunningQueriesStub = sinon.stub();
-        const expected = { activeQueriesCount: 1, queries: [{ query: 'S'.repeat(250) + '...' }] };
+        const expected = 'S'.repeat(250) + '...';
         getPgRunningQueriesStub.resolves({
           result: [
             {
-              state: 'active',
+              ...activeQuery,
               query: 'S'.repeat(251),
             },
-            {
-              state: 'idle',
-              query: 'SELECT PASBON',
-            },
+            idleQuery,
           ],
         });
         const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
@@ -199,25 +198,17 @@ describe('database-stats-repository', function () {
 
         // then
         expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-        expect(response).to.deep.equal(expected);
+        expect(response.queries[0].query).to.equal(expected);
       });
     });
+
     it('should call scalingoApi.getPgRunningQueries and return and count number of active queries', async function () {
       // given
       const scalingoApp = 'application';
       const getPgRunningQueriesStub = sinon.stub();
-      const expected = { activeQueriesCount: 1, queries: [{ query: 'SELECT TOTO' }] };
+      const expected = { activeQueriesCount: 1, queries: [{ query: 'SELECT TOTO', duration: 3000000 }] };
       getPgRunningQueriesStub.resolves({
-        result: [
-          {
-            state: 'active',
-            query: 'SELECT TOTO',
-          },
-          {
-            state: 'idle',
-            query: 'SELECT PASBON',
-          },
-        ],
+        result: [activeQuery, idleQuery],
       });
       const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
 
