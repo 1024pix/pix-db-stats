@@ -145,6 +145,63 @@ describe('database-stats-repository', function () {
   });
 
   describe('#getPgQueriesMetric', function () {
+    describe('Given running query with less than 250', function () {
+      it('should not truncate the returned query', async function () {
+        // given
+        const scalingoApp = 'application';
+        const getPgRunningQueriesStub = sinon.stub();
+        const expected = { activeQueriesCount: 1, queries: [{ query: 'S'.repeat(249) }] };
+        getPgRunningQueriesStub.resolves({
+          result: [
+            {
+              state: 'active',
+              query: 'S'.repeat(249),
+            },
+            {
+              state: 'idle',
+              query: 'SELECT PASBON',
+            },
+          ],
+        });
+        const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
+
+        // when
+        const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
+
+        // then
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response).to.deep.equal(expected);
+      });
+    });
+
+    describe('Given running query with a length greater than 250', function () {
+      it('should truncate the returned query', async function () {
+        // given
+        const scalingoApp = 'application';
+        const getPgRunningQueriesStub = sinon.stub();
+        const expected = { activeQueriesCount: 1, queries: [{ query: 'S'.repeat(250) + '...' }] };
+        getPgRunningQueriesStub.resolves({
+          result: [
+            {
+              state: 'active',
+              query: 'S'.repeat(251),
+            },
+            {
+              state: 'idle',
+              query: 'SELECT PASBON',
+            },
+          ],
+        });
+        const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
+
+        // when
+        const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
+
+        // then
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response).to.deep.equal(expected);
+      });
+    });
     it('should call scalingoApi.getPgRunningQueries and return and count number of active queries', async function () {
       // given
       const scalingoApp = 'application';
