@@ -172,7 +172,7 @@ describe('database-stats-repository', function () {
 
         // then
         expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-        expect(response.queries[0].query).to.equal(expected);
+        expect(response.slowQueries[0].query).to.equal(expected);
       });
     });
 
@@ -198,15 +198,41 @@ describe('database-stats-repository', function () {
 
         // then
         expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-        expect(response.queries[0].query).to.equal(expected);
+        expect(response.slowQueries[0].query).to.equal(expected);
       });
     });
 
-    it('should call scalingoApi.getPgRunningQueries and return and count number of active queries', async function () {
+    describe('Given running query below the slow threshold', function () {
+      it('should not return the query', async function () {
+        // given
+        const scalingoApp = 'application';
+        const getPgRunningQueriesStub = sinon.stub();
+        const expected = { activeQueriesCount: 1, slowQueries: [] };
+        getPgRunningQueriesStub.resolves({
+          result: [
+            {
+              ...activeQuery,
+              query_duration: 100,
+            },
+            idleQuery,
+          ],
+        });
+        const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
+
+        // when
+        const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
+
+        // then
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response).to.deep.equal(expected);
+      });
+    });
+
+    it('should call scalingoApi.getPgRunningQueries and return active queries count and slow queries list', async function () {
       // given
       const scalingoApp = 'application';
       const getPgRunningQueriesStub = sinon.stub();
-      const expected = { activeQueriesCount: 1, queries: [{ query: 'SELECT TOTO', duration: 3000000 }] };
+      const expected = { activeQueriesCount: 1, slowQueries: [{ query: 'SELECT TOTO', duration: 3000000 }] };
       getPgRunningQueriesStub.resolves({
         result: [activeQuery, idleQuery],
       });
