@@ -150,11 +150,13 @@ describe('database-stats-repository', function () {
       state: 'idle',
       query: 'SELECT IDLE',
       query_duration: 100,
+      username: 'database_user',
     };
     const activeQuery = {
       state: 'active',
       query: 'SELECT SLOW',
       query_duration: SLOW_QUERY_DURATION_NANO_THRESHOLD + 1,
+      username: 'database_user',
     };
 
     describe('Given running query with less than 250', function () {
@@ -245,7 +247,10 @@ describe('database-stats-repository', function () {
       // given
       const scalingoApp = 'application';
       const getPgRunningQueriesStub = sinon.stub();
-      const expected = { activeQueriesCount: 1, slowQueries: [{ query: 'SELECT SLOW', duration: 300000000001 }] };
+      const expected = {
+        activeQueriesCount: 1,
+        slowQueries: [{ query: 'SELECT SLOW', duration: 300000000001, usr: 'database_user' }],
+      };
       getPgRunningQueriesStub.resolves({
         result: [activeQuery, idleQuery],
       });
