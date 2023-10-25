@@ -5,6 +5,7 @@ const {
   getPgQueryStats,
 } = require('../../../lib/infrastructure/database-stats-repository');
 const { expect, sinon, nock } = require('../../test-helper');
+const { SLOW_QUERY_DURATION_NANO_THRESHOLD } = require('../../../config');
 
 describe('database-stats-repository', function () {
   describe('#getAvailableDatabases', function () {
@@ -147,13 +148,13 @@ describe('database-stats-repository', function () {
   describe('#getPgQueriesMetric', function () {
     const idleQuery = {
       state: 'idle',
-      query: 'SELECT PASBON',
+      query: 'SELECT IDLE',
       query_duration: 100,
     };
     const activeQuery = {
       state: 'active',
-      query: 'SELECT TOTO',
-      query_duration: 6 * 60 * 10 ** 9,
+      query: 'SELECT SLOW',
+      query_duration: SLOW_QUERY_DURATION_NANO_THRESHOLD + 1,
     };
 
     describe('Given running query with less than 250', function () {
@@ -202,17 +203,28 @@ describe('database-stats-repository', function () {
       });
     });
 
-    describe('Given running query below the slow threshold', function () {
-      it('should not return the query', async function () {
+    describe('Given running queries around the slow threshold', function () {
+      it('should return only the slow query', async function () {
         // given
         const scalingoApp = 'application';
         const getPgRunningQueriesStub = sinon.stub();
-        const expected = { activeQueriesCount: 1, slowQueries: [] };
+        const expected = {
+          activeQueriesCount: 2,
+          slowQueries: [
+            {
+              query: 'SELECT SLOW',
+            },
+          ],
+        };
         getPgRunningQueriesStub.resolves({
           result: [
             {
               ...activeQuery,
-              query_duration: 100,
+              query: 'SELECT FAST',
+              query_duration: SLOW_QUERY_DURATION_NANO_THRESHOLD - 1,
+            },
+            {
+              ...activeQuery,
             },
             idleQuery,
           ],
@@ -224,7 +236,8 @@ describe('database-stats-repository', function () {
 
         // then
         expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-        expect(response).to.deep.equal(expected);
+        expect(response.activeQueriesCount).to.equal(expected.activeQueriesCount);
+        expect(response.slowQueries[0].query).to.equal(expected.slowQueries[0].query);
       });
     });
 
@@ -232,7 +245,7 @@ describe('database-stats-repository', function () {
       // given
       const scalingoApp = 'application';
       const getPgRunningQueriesStub = sinon.stub();
-      const expected = { activeQueriesCount: 1, slowQueries: [{ query: 'SELECT TOTO', duration: 360000000000 }] };
+      const expected = { activeQueriesCount: 1, slowQueries: [{ query: 'SELECT SLOW', duration: 300000000001 }] };
       getPgRunningQueriesStub.resolves({
         result: [activeQuery, idleQuery],
       });
