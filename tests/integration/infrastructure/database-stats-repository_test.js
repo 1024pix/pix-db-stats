@@ -151,12 +151,14 @@ describe('database-stats-repository', function () {
       query: 'SELECT IDLE',
       query_duration: 100,
       username: 'database_user',
+      pid: 2,
     };
     const activeQuery = {
       state: 'active',
       query: 'SELECT SLOW',
       query_duration: SLOW_QUERY_DURATION_NANO_THRESHOLD + 1,
       username: 'database_user',
+      pid: 42,
     };
 
     describe('Given running query with less than 250', function () {
@@ -249,7 +251,7 @@ describe('database-stats-repository', function () {
       const getPgRunningQueriesStub = sinon.stub();
       const expected = {
         activeQueriesCount: 1,
-        slowQueries: [{ query: 'SELECT SLOW', duration: 300000000001, usr: 'database_user' }],
+        slowQueries: [{ query: 'SELECT SLOW', duration: 300000000001, usr: 'database_user', pid: 42 }],
       };
       getPgRunningQueriesStub.resolves({
         result: [activeQuery, idleQuery],
