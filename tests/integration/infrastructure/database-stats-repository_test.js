@@ -251,6 +251,7 @@ describe('database-stats-repository', function () {
       const getPgRunningQueriesStub = sinon.stub();
       const expected = {
         activeQueriesCount: 1,
+        slowQueriesCount: 1,
         slowQueries: [{ query: 'SELECT SLOW', duration: 300000000001, usr: 'database_user', pid: 42 }],
       };
       getPgRunningQueriesStub.resolves({
