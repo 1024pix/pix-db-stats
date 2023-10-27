@@ -5,6 +5,7 @@ const {
   getPgQueryStats,
 } = require('../../../lib/infrastructure/database-stats-repository');
 const { expect, sinon, nock } = require('../../test-helper');
+const { SLOW_QUERY_DURATION_NANO_THRESHOLD } = require('../../../config');
 
 describe('database-stats-repository', function () {
   describe('#getAvailableDatabases', function () {
@@ -145,20 +146,116 @@ describe('database-stats-repository', function () {
   });
 
   describe('#getPgQueriesMetric', function () {
-    it('should call scalingoApi.getPgRunningQueries and return and count number of active queries', async function () {
+    const idleQuery = {
+      state: 'idle',
+      query: 'SELECT IDLE',
+      query_duration: 100,
+      username: 'database_user',
+      pid: 2,
+    };
+    const activeQuery = {
+      state: 'active',
+      query: 'SELECT SLOW',
+      query_duration: SLOW_QUERY_DURATION_NANO_THRESHOLD + 1,
+      username: 'database_user',
+      pid: 42,
+    };
+
+    describe('Given running query with less than 250', function () {
+      it('should not truncate the returned query', async function () {
+        // given
+        const scalingoApp = 'application';
+        const getPgRunningQueriesStub = sinon.stub();
+        const expected = 'S'.repeat(249);
+        getPgRunningQueriesStub.resolves({
+          result: [{ ...activeQuery, query: 'S'.repeat(249) }, idleQuery],
+        });
+        const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
+
+        // when
+        const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
+
+        // then
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response.slowQueries[0].query).to.equal(expected);
+      });
+    });
+
+    describe('Given running query with a length greater than 250', function () {
+      it('should truncate the returned query', async function () {
+        // given
+        const scalingoApp = 'application';
+        const getPgRunningQueriesStub = sinon.stub();
+        const expected = 'S'.repeat(250) + '...';
+        getPgRunningQueriesStub.resolves({
+          result: [
+            {
+              ...activeQuery,
+              query: 'S'.repeat(251),
+            },
+            idleQuery,
+          ],
+        });
+        const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
+
+        // when
+        const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
+
+        // then
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response.slowQueries[0].query).to.equal(expected);
+      });
+    });
+
+    describe('Given running queries around the slow threshold', function () {
+      it('should return only the slow query', async function () {
+        // given
+        const scalingoApp = 'application';
+        const getPgRunningQueriesStub = sinon.stub();
+        const expected = {
+          activeQueriesCount: 2,
+          slowQueries: [
+            {
+              query: 'SELECT SLOW',
+            },
+          ],
+        };
+        getPgRunningQueriesStub.resolves({
+          result: [
+            {
+              ...activeQuery,
+              query: 'SELECT FAST',
+              query_duration: SLOW_QUERY_DURATION_NANO_THRESHOLD - 1,
+            },
+            {
+              ...activeQuery,
+            },
+            idleQuery,
+          ],
+        });
+        const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
+
+        // when
+        const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
+
+        // then
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response.activeQueriesCount).to.equal(expected.activeQueriesCount);
+        expect(response.slowQueries[0].query).to.equal(expected.slowQueries[0].query);
+      });
+    });
+
+    it('should call scalingoApi.getPgRunningQueries and return active queries count and slow queries list', async function () {
       // given
       const scalingoApp = 'application';
       const getPgRunningQueriesStub = sinon.stub();
-      const expected = { activeQueriesCount: 1 };
+      const expected = {
+        activeQueriesCount: 1,
+        slowQueriesCount: 1,
+        slowQueries: [{ query: 'SELECT SLOW', duration: 300000000001, usr: 'database_user', pid: 42 }],
+      };
       getPgRunningQueriesStub.resolves({
-        result: [
-          {
-            state: 'active',
-          },
-          {
-            state: 'idle',
-          },
-        ],
+        result: [activeQuery, idleQuery],
       });
       const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
 
