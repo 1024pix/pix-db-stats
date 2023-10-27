@@ -1,5 +1,20 @@
 # pix-db-stats Changelog
 
+## v3.13.0 (27/10/2023)
+
+
+### :building_construction: Tech
+- [#75](https://github.com/1024pix/pix-db-stats/pull/75) [TECH] 🔊 Log long running queries.
+
+### :arrow_up: Montée de version
+- [#76](https://github.com/1024pix/pix-db-stats/pull/76) [BUMP] Update node to v20 (major).
+- [#73](https://github.com/1024pix/pix-db-stats/pull/73) [BUMP] Lock file maintenance (dossier racine).
+- [#72](https://github.com/1024pix/pix-db-stats/pull/72) [BUMP] Lock file maintenance (dossier racine).
+- [#68](https://github.com/1024pix/pix-db-stats/pull/68) [BUMP] Update dependency sinon to v16 (dossier racine).
+- [#66](https://github.com/1024pix/pix-db-stats/pull/66) [BUMP] Lock file maintenance (dossier racine).
+- [#65](https://github.com/1024pix/pix-db-stats/pull/65) [BUMP] Update dependency eslint-config-prettier to v9 (dossier racine).
+- [#63](https://github.com/1024pix/pix-db-stats/pull/63) [BUMP] Update node to v18.17.1.
+
 ## v3.12.0 (08/08/2023)
 
 
