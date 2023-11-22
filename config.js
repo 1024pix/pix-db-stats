@@ -29,7 +29,6 @@ const config = {
   CACHE_HIT_RATIO_SCHEDULE: process.env.CACHE_HIT_RATIO_SCHEDULE || DEFAULT_CACHE_HIT_RATIO_SCHEDULE,
   QUERIES_METRIC_SCHEDULE: process.env.QUERIES_METRIC_SCHEDULE || DEFAULT_QUERIES_METRIC_SCHEDULE,
   SLOW_QUERY_DURATION_NANO_THRESHOLD: (process.env.SLOW_QUERY_DURATION_SECONDS_THRESHOLD || 5 * 60) * 10 ** 9,
-  TEST_DATABASE_URL: process.env.TEST_DATABASE_URL,
 };
 
 if (process.env.NODE_ENV === 'test') {
@@ -37,6 +36,7 @@ if (process.env.NODE_ENV === 'test') {
   config.SCALINGO_APPS = ['application-1', 'application-2'];
   config.FT_QUERIES_METRIC = true;
   config.QUERIES_METRIC_SCHEDULE = eachSecond;
+  config.DATABASE_URL = process.env.DATABASE_URL || 'postgres://pix@localhost:5432/db-stats';
 }
 
 module.exports = config;
