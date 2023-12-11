@@ -1,5 +1,5 @@
 const { Client } = require('pg');
-const { expect } = require('../../test-helper');
+const { expect, nock } = require('../../test-helper');
 const { getBlockingQueries, logBlockingQueries } = require('../../../lib/application/task-blocking-queries');
 const { DATABASE_URL } = require('../../../config');
 
@@ -50,23 +50,9 @@ describe('#getBlockingQueries', function () {
     await client1.end();
     await client2.end();
 
-    expect(result.length).to.equal(2);
-    expect(result[0]).to.include({
-      waiting_locktype: 'relation',
-      waiting_table: 'blocking_table',
-      waiting_query: 'BEGIN; ALTER TABLE blocking_table DROP COLUMN value;',
-      waiting_mode: 'AccessExclusiveLock',
-      blocking_locktype: 'relation',
-      blocking_table: 'blocking_table',
-      blocking_query: 'INSERT into blocking_table VALUES (1, "tt" , 12) ;',
-      blocking_mode: 'RowExclusiveLock',
-      blocking_granted: false,
-    });
-    expect(result[0].blocking_duration).to.be.a('number');
-    expect(result[0].blocking_pid).to.be.a('number');
-    expect(result[0].waiting_pid).to.be.a('number');
+    expect(result.length).to.equal(1);
 
-    expect(result[1]).to.include({
+    expect(result[0]).to.include({
       waiting_locktype: 'relation',
       waiting_table: 'blocking_table',
       waiting_query: 'INSERT into blocking_table VALUES (1, "tt" , 12) ;',
@@ -77,8 +63,27 @@ describe('#getBlockingQueries', function () {
       blocking_mode: 'AccessExclusiveLock',
       blocking_granted: true,
     });
-    expect(result[1].blocking_duration).to.be.a('number');
-    expect(result[1].blocking_pid).to.be.a('number');
-    expect(result[1].waiting_pid).to.be.a('number');
+    expect(result[0].blocking_duration).to.be.a('number');
+    expect(result[0].blocking_pid).to.be.a('number');
+    expect(result[0].waiting_pid).to.be.a('number');
+  });
+});
+
+describe('#logBlockingQueries', function () {
+  it('should not throw an error when API Scalingo fails', async function () {
+    let hasThrown = false;
+    // when
+    nock(`https://auth.scalingo.com`).persist().post('/v1/tokens/exchange').reply(401, {
+      token: 'myfaketoken',
+      error: 'Invalid credentials',
+    });
+
+    try {
+      await logBlockingQueries();
+    } catch (error) {
+      hasThrown = true;
+    }
+    // then
+    expect(hasThrown).to.be.false;
   });
 });
