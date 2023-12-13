@@ -62,8 +62,13 @@ describe('#getBlockingQueries', function () {
       blocking_query: 'BEGIN; ALTER TABLE blocking_table DROP COLUMN value;',
       blocking_mode: 'AccessExclusiveLock',
       blocking_granted: true,
+      waiting_usr: 'user',
+      blocking_usr: 'user',
     });
+    expect(result[0].waiting_for_lock_start).to.be.a('date');
+    expect(result[0].waiting_for_lock_duration).to.be.a('number');
     expect(result[0].blocking_duration).to.be.a('number');
+    expect(result[0].waiting_duration).to.be.a('number');
     expect(result[0].blocking_pid).to.be.a('number');
     expect(result[0].waiting_pid).to.be.a('number');
   });
