@@ -40,7 +40,7 @@ if (process.env.NODE_ENV === 'test') {
   config.FT_QUERIES_METRIC = true;
   config.QUERIES_METRIC_SCHEDULE = eachSecond;
   config.BLOCKING_QUERIES_SCHEDULE = eachSecond;
-  config.DATABASE_URL = process.env.DATABASE_URL || 'postgres://pix@localhost:5432/db-stats';
+  config.DATABASE_URL = process.env.DATABASE_URL || 'postgres://user@localhost:5432/db-stats';
   config.BLOCKING_QUERIES_MINUTES_THRESHOLD = process.env.BLOCKING_QUERIES_MINUTES_THRESHOLD = 0;
 }
 

@@ -8,5 +8,5 @@ services:
       - '${PIX_DATABASE_PORT:-5432}:5432'
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_USER: pix
+      POSTGRES_USER: user
       POSTGRES_DB: db-stats
