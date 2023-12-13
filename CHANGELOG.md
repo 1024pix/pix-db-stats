@@ -1,5 +1,16 @@
 # pix-db-stats Changelog
 
+## v3.14.0 (13/12/2023)
+
+
+### :arrow_up: Montée de version
+- [#78](https://github.com/1024pix/pix-db-stats/pull/78) [BUMP] Lock file maintenance (dossier racine).
+- [#79](https://github.com/1024pix/pix-db-stats/pull/79) [BUMP] Update dependency axios to v1.6.0 [SECURITY].
+- [#77](https://github.com/1024pix/pix-db-stats/pull/77) [BUMP] Update dependency sinon to v17 (dossier racine).
+
+### :coffee: Autre
+- [#81](https://github.com/1024pix/pix-db-stats/pull/81) Monitor locked queries.
+
 ## v3.13.0 (27/10/2023)
 
 
