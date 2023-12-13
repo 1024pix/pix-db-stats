@@ -1,6 +1,6 @@
 const { expect, nock } = require('../../test-helper');
 const { getCacheHit, logCacheHits } = require('../../../lib/application/task-cache-hit');
-const { TEST_DATABASE_URL: connexionString } = require('../../../config');
+const { DATABASE_URL: connexionString } = require('../../../config');
 
 describe('#getCacheHit', function () {
   it('should return a positive percentage', async function () {

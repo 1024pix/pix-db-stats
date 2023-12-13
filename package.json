@@ -11,6 +11,7 @@
     "preinstall": "npx check-engine",
     "progress": "node ./lib/application/run-task-progress.js",
     "queries-metric": "node ./lib/application/run-task-queries-metric.js",
+    "blocking-queries": "node ./lib/application/run-task-blocking-queries.js",
     "response-time": "node ./lib/application/run-task-response-time.js",
     "schedule-tasks": "node ./lib/application/schedule-tasks.js",
     "statements": "node ./lib/application/run-task-statements.js",
