@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.14.1 (13/12/2023)
+
+
+### :building_construction: Tech
+- [#82](https://github.com/1024pix/pix-db-stats/pull/82) [TECH] Ajout d'informations sur les queries bloquées et bloquantes.
+
 ## v3.14.0 (13/12/2023)
 
 
