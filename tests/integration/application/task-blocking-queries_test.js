@@ -1,7 +1,9 @@
-const { Client } = require('pg');
-const { expect, nock } = require('../../test-helper');
-const { getBlockingQueries, logBlockingQueries } = require('../../../lib/application/task-blocking-queries');
-const { DATABASE_URL } = require('../../../config');
+import pg from 'pg';
+import { expect, nock } from '../../test-helper.js';
+import { getBlockingQueries, logBlockingQueries } from '../../../lib/application/task-blocking-queries.js';
+import { DATABASE_URL } from '../../../config.js';
+
+const Client = pg.Client;
 
 async function createTable() {
   const client = new Client(DATABASE_URL);
@@ -75,6 +77,7 @@ describe('#getBlockingQueries', function () {
   });
 });
 
+// eslint-disable-next-line mocha/max-top-level-suites
 describe('#logBlockingQueries', function () {
   it('should not throw an error when API Scalingo fails', async function () {
     let hasThrown = false;

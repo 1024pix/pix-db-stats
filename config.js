@@ -1,4 +1,4 @@
-require('dotenv').config();
+import 'dotenv/config';
 
 const eachSecond = '* * * * * *';
 
@@ -44,4 +44,12 @@ if (process.env.NODE_ENV === 'test') {
   config.BLOCKING_QUERIES_MINUTES_THRESHOLD = process.env.BLOCKING_QUERIES_MINUTES_THRESHOLD = 0;
 }
 
-module.exports = config;
+export const {
+  SCALINGO_REGION,
+  SCALINGO_TOKEN,
+  DATABASE_URL,
+  SCALINGO_APPS,
+  BLOCKING_QUERIES_MINUTES_THRESHOLD,
+  SLOW_QUERY_DURATION_NANO_THRESHOLD,
+  RESPONSE_TIME_QUERY,
+} = config;

@@ -1,5 +1,5 @@
-const taskQueriesMetric = require('../../../lib/application/task-queries-metric');
-const { expect, sinon, nock } = require('../../test-helper');
+import { run } from '../../../lib/application/task-queries-metric.js';
+import { expect, sinon, nock } from '../../test-helper.js';
 
 describe('#task-queries-metric', function () {
   it('should call queries metric once for each application', async function () {
@@ -12,7 +12,7 @@ describe('#task-queries-metric', function () {
     const scalingoApi = sinon.stub();
 
     // when
-    await taskQueriesMetric.run(databaseStatsRepository, scalingoApi);
+    await run(databaseStatsRepository, scalingoApi);
 
     // then
     expect(getPgQueriesMetricStub.firstCall.args[0]).to.equal(scalingoApi);
@@ -37,7 +37,7 @@ describe('#task-queries-metric', function () {
     });
 
     try {
-      await taskQueriesMetric.run(databaseStatsRepository, scalingoApi);
+      await run(databaseStatsRepository, scalingoApi);
     } catch (error) {
       hasThrown = true;
     }

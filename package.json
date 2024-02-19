@@ -5,6 +5,7 @@
   "engines": {
     "node": "^20.8.1"
   },
+  "type": "module",
   "scripts": {
     "lint": "eslint .",
     "metrics": "node ./lib/application/run-task-metrics.js",

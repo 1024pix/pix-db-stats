@@ -1,11 +1,11 @@
-const {
+import {
   getAvailableDatabases,
   getDBMetrics,
   getPgQueriesMetric,
   getPgQueryStats,
-} = require('../../../lib/infrastructure/database-stats-repository');
-const { expect, sinon, nock } = require('../../test-helper');
-const { SLOW_QUERY_DURATION_NANO_THRESHOLD } = require('../../../config');
+} from '../../../lib/infrastructure/database-stats-repository.js';
+import { expect, sinon, nock } from '../../test-helper.js';
+import { SLOW_QUERY_DURATION_NANO_THRESHOLD } from '../../../config.js';
 
 describe('database-stats-repository', function () {
   describe('#getAvailableDatabases', function () {
