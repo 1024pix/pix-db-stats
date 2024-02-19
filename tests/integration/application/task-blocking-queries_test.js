@@ -32,6 +32,7 @@ describe('#getBlockingQueries', function () {
   beforeEach(async function () {
     await createTable();
   });
+
   afterEach(async function () {
     await cleanupTable();
   });
