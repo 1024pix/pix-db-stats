@@ -2,6 +2,7 @@
   "name": "pix-db-stats",
   "version": "3.14.1",
   "description": "Collecte de statistiques sur la base de données Pix",
+  "type": "module",
   "engines": {
     "node": "^20.8.1"
   },
