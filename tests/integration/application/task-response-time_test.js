@@ -1,11 +1,11 @@
-const { expect, nock } = require('../../test-helper');
-const taskResponseTime = require('../../../lib/application/task-response-time');
+import testHelpers from '../../test-helper.js';
+import taskResponseTime from '../../../lib/application/task-response-time.js';
 
 describe('#taskResponseTime', function () {
   it('should not throw an error when API Scalingo fails', async function () {
     let hasThrown = false;
     // when
-    nock(`https://auth.scalingo.com`).persist().post('/v1/tokens/exchange').reply(401, {
+    testHelpers.nock(`https://auth.scalingo.com`).persist().post('/v1/tokens/exchange').reply(401, {
       token: 'myfaketoken',
       error: 'Invalid credentials',
     });
@@ -16,6 +16,6 @@ describe('#taskResponseTime', function () {
       hasThrown = true;
     }
     // then
-    expect(hasThrown).to.be.false;
+    testHelpers.expect(hasThrown).to.be.false;
   });
 });

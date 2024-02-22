@@ -1,5 +1,5 @@
-const { expect, sinon } = require('../../test-helper');
-
+import sinon from '../../test-helper.js';
+import { expect } from 'chai';
 describe('Integration | schedule-task', function () {
   let clock;
 
