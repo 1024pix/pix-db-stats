@@ -4,7 +4,7 @@ import {
   getPgQueriesMetric,
   getPgQueryStats,
 } from '../../../lib/infrastructure/database-stats-repository.js';
-import testHelpers from '../../test-helper.js';
+import { expect, sinon, nock } from '../../test-helper.js';
 import config from '../../../config.js';
 
 describe('database-stats-repository', function () {
@@ -12,7 +12,7 @@ describe('database-stats-repository', function () {
     it('should call scalingoApi.getAddons and return the postgres addon', async function () {
       // given
       const scalingoApp = 'my-application';
-      const getAddonsStub = testHelpers.sinon.stub().resolves([
+      const getAddonsStub = sinon.stub().resolves([
         {
           id: '5415beca646173000b015000',
           addon_provider: {
@@ -38,8 +38,8 @@ describe('database-stats-repository', function () {
       const databases = await getAvailableDatabases(scalingoApi, scalingoApp);
 
       // then
-      testHelpers.expect(getAddonsStub).to.have.been.calledOnceWithExactly(scalingoApp);
-      testHelpers.expect(databases).to.eql([
+      expect(getAddonsStub).to.have.been.calledOnceWithExactly(scalingoApp);
+      expect(databases).to.eql([
         { name: 'postgresql', id: '5415beca646173000b015000' },
         { name: 'redis', id: '5415beca646173000b015001' },
       ]);
@@ -69,7 +69,7 @@ describe('database-stats-repository', function () {
           diskio: { reads: 120, writes: 10 },
         },
       };
-      const getDbMetricsStub = testHelpers.sinon.stub().resolves({
+      const getDbMetricsStub = sinon.stub().resolves({
         cpu_usage: 0,
         memory: {
           memory: 156426240,
@@ -98,7 +98,7 @@ describe('database-stats-repository', function () {
           },
         },
       });
-      const getInstancesStatusStub = testHelpers.sinon.stub().resolves([
+      const getInstancesStatusStub = sinon.stub().resolves([
         {
           id: 'gateway',
           type: 'gateway',
@@ -124,8 +124,8 @@ describe('database-stats-repository', function () {
           role: 'follower',
         },
       ]);
-      const getDbDiskStub = testHelpers.sinon.stub().resolves({ disk_total: 120, disk_used: 10 });
-      const getDbDiskIOStub = testHelpers.sinon.stub().resolves({ diskio_reads: 120, diskio_writes: 10 });
+      const getDbDiskStub = sinon.stub().resolves({ disk_total: 120, disk_used: 10 });
+      const getDbDiskIOStub = sinon.stub().resolves({ diskio_reads: 120, diskio_writes: 10 });
       const scalingoApi = {
         getDbMetrics: getDbMetricsStub,
         getInstancesStatus: getInstancesStatusStub,
@@ -137,11 +137,11 @@ describe('database-stats-repository', function () {
       const metrics = await getDBMetrics(scalingoApi, scalingoApp, addonId);
 
       // then
-      testHelpers.expect(getDbMetricsStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId);
-      testHelpers.expect(getInstancesStatusStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId);
-      testHelpers.expect(getDbDiskStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, 'instance-leader');
-      testHelpers.expect(getDbDiskIOStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, 'instance-leader');
-      testHelpers.expect(metrics).to.eql(expectedMetrics);
+      expect(getDbMetricsStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId);
+      expect(getInstancesStatusStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId);
+      expect(getDbDiskStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, 'instance-leader');
+      expect(getDbDiskIOStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, 'instance-leader');
+      expect(metrics).to.eql(expectedMetrics);
     });
   });
 
@@ -166,7 +166,7 @@ describe('database-stats-repository', function () {
       it('should not truncate the returned query', async function () {
         // given
         const scalingoApp = 'application';
-        const getPgRunningQueriesStub = testHelpers.sinon.stub();
+        const getPgRunningQueriesStub = sinon.stub();
         const expected = 'S'.repeat(249);
         getPgRunningQueriesStub.resolves({
           result: [{ ...activeQuery, query: 'S'.repeat(249) }, idleQuery],
@@ -177,8 +177,8 @@ describe('database-stats-repository', function () {
         const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
 
         // then
-        testHelpers.expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-        testHelpers.expect(response.slowQueries[0].query).to.equal(expected);
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response.slowQueries[0].query).to.equal(expected);
       });
     });
 
@@ -186,7 +186,7 @@ describe('database-stats-repository', function () {
       it('should truncate the returned query', async function () {
         // given
         const scalingoApp = 'application';
-        const getPgRunningQueriesStub = testHelpers.sinon.stub();
+        const getPgRunningQueriesStub = sinon.stub();
         const expected = 'S'.repeat(250) + '...';
         getPgRunningQueriesStub.resolves({
           result: [
@@ -203,8 +203,8 @@ describe('database-stats-repository', function () {
         const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
 
         // then
-        testHelpers.expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-        testHelpers.expect(response.slowQueries[0].query).to.equal(expected);
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response.slowQueries[0].query).to.equal(expected);
       });
     });
 
@@ -212,7 +212,7 @@ describe('database-stats-repository', function () {
       it('should return only the slow query', async function () {
         // given
         const scalingoApp = 'application';
-        const getPgRunningQueriesStub = testHelpers.sinon.stub();
+        const getPgRunningQueriesStub = sinon.stub();
         const expected = {
           activeQueriesCount: 2,
           slowQueries: [
@@ -240,16 +240,16 @@ describe('database-stats-repository', function () {
         const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
 
         // then
-        testHelpers.expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-        testHelpers.expect(response.activeQueriesCount).to.equal(expected.activeQueriesCount);
-        testHelpers.expect(response.slowQueries[0].query).to.equal(expected.slowQueries[0].query);
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response.activeQueriesCount).to.equal(expected.activeQueriesCount);
+        expect(response.slowQueries[0].query).to.equal(expected.slowQueries[0].query);
       });
     });
 
     it('should call scalingoApi.getPgRunningQueries and return active queries count and slow queries list', async function () {
       // given
       const scalingoApp = 'application';
-      const getPgRunningQueriesStub = testHelpers.sinon.stub();
+      const getPgRunningQueriesStub = sinon.stub();
       const expected = {
         activeQueriesCount: 1,
         slowQueriesCount: 1,
@@ -264,8 +264,8 @@ describe('database-stats-repository', function () {
       const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
 
       // then
-      testHelpers.expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
-      testHelpers.expect(response).to.deep.equal(expected);
+      expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+      expect(response).to.deep.equal(expected);
     });
   });
 
@@ -297,31 +297,26 @@ describe('database-stats-repository', function () {
         },
       ];
 
-      const tokenNock = testHelpers.nock(`https://auth.scalingo.com`).post('/v1/tokens/exchange').reply(200, {
+      const tokenNock = nock(`https://auth.scalingo.com`).post('/v1/tokens/exchange').reply(200, {
         token: 'myfaketoken',
       });
 
-      const addonIdNock = testHelpers
-        .nock(`https://api.REGION.scalingo.com`)
+      const addonIdNock = nock(`https://api.REGION.scalingo.com`)
         .get('/v1/apps/application-1/addons')
         .reply(200, {
           addons: [{ id: 'addonid', addon_provider: { id: 'postgresql' } }],
         });
 
-      const addonTokenNock = testHelpers
-        .nock('https://api.REGION.scalingo.com')
+      const addonTokenNock = nock('https://api.REGION.scalingo.com')
         .post('/v1/apps/application-1/addons/addonid/token')
         .reply(200, {
           addon: { token: 'myfaketoken' },
         });
 
-      const statsNock = testHelpers
-        .nock(`https://db-api.REGION.scalingo.com`)
-        .post('/api/databases/addonid/action')
-        .reply(200, {
-          ok: 1,
-          result: queryStats,
-        });
+      const statsNock = nock(`https://db-api.REGION.scalingo.com`).post('/api/databases/addonid/action').reply(200, {
+        ok: 1,
+        result: queryStats,
+      });
 
       const scalingoApp = 'application-1';
 
@@ -329,11 +324,11 @@ describe('database-stats-repository', function () {
       const response = await getPgQueryStats(scalingoApp);
 
       // then
-      testHelpers.expect(tokenNock.calledOnceWithExactly);
-      testHelpers.expect(addonIdNock.calledOnceWithExactly);
-      testHelpers.expect(addonTokenNock.calledOnceWithExactly);
-      testHelpers.expect(statsNock.calledOnceWithExactly);
-      testHelpers.expect(response).to.deep.equal(queryStats);
+      expect(tokenNock.calledOnceWithExactly);
+      expect(addonIdNock.calledOnceWithExactly);
+      expect(addonTokenNock.calledOnceWithExactly);
+      expect(statsNock.calledOnceWithExactly);
+      expect(response).to.deep.equal(queryStats);
     });
   });
 });

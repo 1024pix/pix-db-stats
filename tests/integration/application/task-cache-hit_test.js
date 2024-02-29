@@ -1,16 +1,17 @@
-import testHelpers from '../../test-helper.js';
+import { expect, nock } from '../../test-helper.js';
 import { getCacheHit, logCacheHits } from '../../../lib/application/task-cache-hit.js';
 import config from '../../../config.js';
 
+const { DATABASE_URL } = config;
 describe('#getCacheHit', function () {
   it('should return a positive percentage', async function () {
     // when
-    const result = await getCacheHit(config.DATABASE_URL);
+    const result = await getCacheHit(DATABASE_URL);
 
     // then
-    testHelpers.expect(result).to.be.a('number');
-    testHelpers.expect(result).to.be.at.least(0);
-    testHelpers.expect(result).to.be.at.most(100);
+    expect(result).to.be.a('number');
+    expect(result).to.be.at.least(0);
+    expect(result).to.be.at.most(100);
   });
 });
 
@@ -19,7 +20,7 @@ describe('#logCacheHits', function () {
   it('should not throw an error when API Scalingo fails', async function () {
     let hasThrown = false;
     // when
-    testHelpers.nock(`https://auth.scalingo.com`).persist().post('/v1/tokens/exchange').reply(401, {
+    nock(`https://auth.scalingo.com`).persist().post('/v1/tokens/exchange').reply(401, {
       token: 'myfaketoken',
       error: 'Invalid credentials',
     });
@@ -30,6 +31,6 @@ describe('#logCacheHits', function () {
       hasThrown = true;
     }
     // then
-    testHelpers.expect(hasThrown).to.be.false;
+    expect(hasThrown).to.be.false;
   });
 });

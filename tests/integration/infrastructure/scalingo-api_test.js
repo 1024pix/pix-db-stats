@@ -7,7 +7,7 @@ import {
   getDbDiskIO,
 } from '../../../lib/infrastructure/scalingo-api.js';
 
-import testHelpers from '../../test-helper.js';
+import { nock, expect } from '../../test-helper.js';
 
 describe('scalingo-api', function () {
   describe('#getAddons', function () {
@@ -15,14 +15,13 @@ describe('scalingo-api', function () {
       // given
       const application = 'my-application';
       const addons = [];
-      testHelpers.nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
 
-      testHelpers
-        .nock('https://api.REGION.scalingo.com/v1', {
-          reqheaders: {
-            authorization: 'Bearer my-token',
-          },
-        })
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
         .get(`/apps/${application}/addons`)
         .reply(200, { addons });
 
@@ -30,8 +29,8 @@ describe('scalingo-api', function () {
       const addonsResponse = await getAddons(application);
 
       // then
-      testHelpers.expect(testHelpers.nock.isDone()).to.be.true;
-      testHelpers.expect(addonsResponse).to.deep.equal(addons);
+      expect(nock.isDone()).to.be.true;
+      expect(addonsResponse).to.deep.equal(addons);
     });
   });
 
@@ -42,23 +41,21 @@ describe('scalingo-api', function () {
       const addonId = 'my-addon-id';
       const expectedMetrics = { cpu_usage: 0 };
 
-      testHelpers.nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
 
-      testHelpers
-        .nock('https://api.REGION.scalingo.com/v1', {
-          reqheaders: {
-            authorization: 'Bearer my-token',
-          },
-        })
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
         .post(`/apps/${application}/addons/${addonId}/token`)
         .reply(200, { addon: { token: 'my-database-token' } });
 
-      testHelpers
-        .nock('https://db-api.REGION.scalingo.com', {
-          reqheaders: {
-            authorization: 'Bearer my-database-token',
-          },
-        })
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
         .get(`/api/databases/${addonId}/metrics`)
         .reply(200, expectedMetrics);
 
@@ -66,8 +63,8 @@ describe('scalingo-api', function () {
       const metrics = await getDbMetrics(application, addonId);
 
       // then
-      testHelpers.expect(testHelpers.nock.isDone()).to.be.true;
-      testHelpers.expect(metrics).to.eql(expectedMetrics);
+      expect(nock.isDone()).to.be.true;
+      expect(metrics).to.eql(expectedMetrics);
     });
   });
 
@@ -78,23 +75,21 @@ describe('scalingo-api', function () {
       const addonId = 'my-addon-id';
       const expectedStatus = [{ id: '1' }];
 
-      testHelpers.nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
 
-      testHelpers
-        .nock('https://api.REGION.scalingo.com/v1', {
-          reqheaders: {
-            authorization: 'Bearer my-token',
-          },
-        })
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
         .post(`/apps/${application}/addons/${addonId}/token`)
         .reply(200, { addon: { token: 'my-database-token' } });
 
-      testHelpers
-        .nock('https://db-api.REGION.scalingo.com', {
-          reqheaders: {
-            authorization: 'Bearer my-database-token',
-          },
-        })
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
         .get(`/api/databases/${addonId}/instances_status`)
         .reply(200, expectedStatus);
 
@@ -102,8 +97,8 @@ describe('scalingo-api', function () {
       const instancesStatus = await getInstancesStatus(application, addonId);
 
       // then
-      testHelpers.expect(testHelpers.nock.isDone()).to.be.true;
-      testHelpers.expect(instancesStatus).to.eql(expectedStatus);
+      expect(nock.isDone()).to.be.true;
+      expect(instancesStatus).to.eql(expectedStatus);
     });
   });
 
@@ -115,23 +110,21 @@ describe('scalingo-api', function () {
       const leaderNodeId = 'my-leader-id';
       const expectedMetrics = [{ id: '1' }];
 
-      testHelpers.nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
 
-      testHelpers
-        .nock('https://api.REGION.scalingo.com/v1', {
-          reqheaders: {
-            authorization: 'Bearer my-token',
-          },
-        })
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
         .post(`/apps/${application}/addons/${addonId}/token`)
         .reply(200, { addon: { token: 'my-database-token' } });
 
-      testHelpers
-        .nock('https://db-api.REGION.scalingo.com', {
-          reqheaders: {
-            authorization: 'Bearer my-database-token',
-          },
-        })
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
         .get(`/api/databases/${addonId}/instances/${leaderNodeId}/metrics/disk`)
         .query({ since: 3, last: true })
         .reply(200, { disk_metrics: [expectedMetrics] });
@@ -140,8 +133,8 @@ describe('scalingo-api', function () {
       const metrics = await getDbDisk(application, addonId, leaderNodeId);
 
       // then
-      testHelpers.expect(testHelpers.nock.isDone()).to.be.true;
-      testHelpers.expect(metrics).to.eql(expectedMetrics);
+      expect(nock.isDone()).to.be.true;
+      expect(metrics).to.eql(expectedMetrics);
     });
   });
 
@@ -153,23 +146,21 @@ describe('scalingo-api', function () {
       const leaderNodeId = 'my-leader-id';
       const expectedMetrics = [{ id: '1' }];
 
-      testHelpers.nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
 
-      testHelpers
-        .nock('https://api.REGION.scalingo.com/v1', {
-          reqheaders: {
-            authorization: 'Bearer my-token',
-          },
-        })
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
         .post(`/apps/${application}/addons/${addonId}/token`)
         .reply(200, { addon: { token: 'my-database-token' } });
 
-      testHelpers
-        .nock('https://db-api.REGION.scalingo.com', {
-          reqheaders: {
-            authorization: 'Bearer my-database-token',
-          },
-        })
+      nock('https://db-api.REGION.scalingo.com', {
+        reqheaders: {
+          authorization: 'Bearer my-database-token',
+        },
+      })
         .get(`/api/databases/${addonId}/instances/${leaderNodeId}/metrics/diskio`)
         .query({ since: 3, last: true })
         .reply(200, { diskio_metrics: [expectedMetrics] });
@@ -178,8 +169,8 @@ describe('scalingo-api', function () {
       const metrics = await getDbDiskIO(application, addonId, leaderNodeId);
 
       // then
-      testHelpers.expect(testHelpers.nock.isDone()).to.be.true;
-      testHelpers.expect(metrics).to.eql(expectedMetrics);
+      expect(nock.isDone()).to.be.true;
+      expect(metrics).to.eql(expectedMetrics);
     });
   });
 
@@ -217,8 +208,7 @@ describe('scalingo-api', function () {
         result: queries,
       };
 
-      testHelpers
-        .nock(baseURL)
+      nock(baseURL)
         .post(`/api/databases/${addonId}/action`, {
           action_name: 'pg-list-queries',
         })
@@ -228,7 +218,7 @@ describe('scalingo-api', function () {
       const stats = await getPgRunningQueries(scalingoApp, getCredentials);
 
       // then
-      testHelpers.expect(stats).to.deep.equal(scalingoResponse);
+      expect(stats).to.deep.equal(scalingoResponse);
     });
   });
 });

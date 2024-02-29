@@ -18,9 +18,4 @@ afterEach(function () {
 });
 
 // eslint-disable-next-line mocha/no-exports
-export default {
-  chai,
-  expect,
-  nock,
-  sinon,
-};
+export { chai, expect, nock, sinon };
