@@ -1,5 +1,17 @@
 # pix-db-stats Changelog
 
+## v3.14.2 (06/03/2024)
+
+
+### :building_construction: Tech
+- [#84](https://github.com/1024pix/pix-db-stats/pull/84) [TECH] Monter les versions des images postgresql.
+
+### :arrow_up: Montée de version
+- [#89](https://github.com/1024pix/pix-db-stats/pull/89) [BUMP] Lock file maintenance (dossier racine).
+- [#71](https://github.com/1024pix/pix-db-stats/pull/71) [BUMP] Update dependency cron to v3 (dossier racine).
+- [#86](https://github.com/1024pix/pix-db-stats/pull/86) [BUMP] Lock file maintenance (dossier racine).
+- [#83](https://github.com/1024pix/pix-db-stats/pull/83) [BUMP] Lock file maintenance (dossier racine).
+
 ## v3.14.1 (13/12/2023)
 
 
