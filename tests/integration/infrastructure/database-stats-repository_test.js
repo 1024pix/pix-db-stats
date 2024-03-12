@@ -4,9 +4,10 @@ import {
   getPgQueriesMetric,
   getPgQueryStats,
 } from '../../../lib/infrastructure/database-stats-repository.js';
-import { expect, sinon, nock } from '../../test-helper.js';
+import { expect } from '../../test-helper.js';
 import config from '../../../config.js';
-
+import sinon from 'sinon';
+import nock from 'nock';
 describe('database-stats-repository', function () {
   describe('#getAvailableDatabases', function () {
     it('should call scalingoApi.getAddons and return the postgres addon', async function () {
