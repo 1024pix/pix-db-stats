@@ -1,12 +1,13 @@
-const {
+import {
   getDbMetrics,
   getAddons,
   getInstancesStatus,
   getPgRunningQueries,
   getDbDisk,
   getDbDiskIO,
-} = require('../../../lib/infrastructure/scalingo-api');
-const { expect, nock } = require('../../test-helper');
+} from '../../../lib/infrastructure/scalingo-api.js';
+
+import { nock, expect } from '../../test-helper.js';
 
 describe('scalingo-api', function () {
   describe('#getAddons', function () {

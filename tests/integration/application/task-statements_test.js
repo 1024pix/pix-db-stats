@@ -1,5 +1,5 @@
-const { expect, nock } = require('../../test-helper');
-const task = require('../../../lib/application/task-statements');
+import { expect, nock } from '../../test-helper.js';
+import task from '../../../lib/application/task-statements.js';
 
 describe('#task', function () {
   it('should not throw an error when API Scalingo fails', async function () {

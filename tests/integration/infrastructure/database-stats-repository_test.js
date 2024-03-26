@@ -1,12 +1,13 @@
-const {
+import {
   getAvailableDatabases,
   getDBMetrics,
   getPgQueriesMetric,
   getPgQueryStats,
-} = require('../../../lib/infrastructure/database-stats-repository');
-const { expect, sinon, nock } = require('../../test-helper');
-const { SLOW_QUERY_DURATION_NANO_THRESHOLD } = require('../../../config');
-
+} from '../../../lib/infrastructure/database-stats-repository.js';
+import { expect } from '../../test-helper.js';
+import config from '../../../config.js';
+import sinon from 'sinon';
+import nock from 'nock';
 describe('database-stats-repository', function () {
   describe('#getAvailableDatabases', function () {
     it('should call scalingoApi.getAddons and return the postgres addon', async function () {
@@ -156,7 +157,8 @@ describe('database-stats-repository', function () {
     const activeQuery = {
       state: 'active',
       query: 'SELECT SLOW',
-      query_duration: SLOW_QUERY_DURATION_NANO_THRESHOLD + 1,
+      // eslint-disable-next-line mocha/no-setup-in-describe
+      query_duration: config.SLOW_QUERY_DURATION_NANO_THRESHOLD + 1,
       username: 'database_user',
       pid: 42,
     };
@@ -225,7 +227,7 @@ describe('database-stats-repository', function () {
             {
               ...activeQuery,
               query: 'SELECT FAST',
-              query_duration: SLOW_QUERY_DURATION_NANO_THRESHOLD - 1,
+              query_duration: config.SLOW_QUERY_DURATION_NANO_THRESHOLD - 1,
             },
             {
               ...activeQuery,

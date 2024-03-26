@@ -1,5 +1,5 @@
-const { expect, sinon } = require('../../test-helper');
-
+import { expect, sinon } from '../../test-helper.js';
+import { schedule } from '../../../lib/application/schedule-tasks.js';
 describe('Integration | schedule-task', function () {
   let clock;
 
@@ -15,13 +15,10 @@ describe('Integration | schedule-task', function () {
     it('should extract them periodically', function () {
       // given
       const ONE_SECOND = 1 * 10 ** 3;
-      const taskQueriesMetric = require('../../../lib/application/task-queries-metric');
-      const runStub = sinon.stub();
-      const run = taskQueriesMetric.run;
-      taskQueriesMetric.run = runStub;
+      const runStub = sinon.stub().resolves();
 
       // when
-      require('../../../lib/application/schedule-tasks');
+      schedule({ runCommand: runStub });
 
       // then
       expect(runStub).to.not.have.been.called;
@@ -37,7 +34,6 @@ describe('Integration | schedule-task', function () {
 
       // then
       expect(runStub).to.have.been.calledOnce;
-      taskQueriesMetric.run = run;
     });
   });
 });
