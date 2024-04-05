@@ -6,6 +6,7 @@ extends:
 parserOptions:
   ecmaVersion: 2020
   requireConfigFile: false
+  sourceType: module
 env:
   es6: true
   node: true

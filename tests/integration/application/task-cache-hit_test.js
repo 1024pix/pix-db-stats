@@ -1,11 +1,12 @@
-const { expect, nock } = require('../../test-helper');
-const { getCacheHit, logCacheHits } = require('../../../lib/application/task-cache-hit');
-const { DATABASE_URL: connexionString } = require('../../../config');
+import { expect, nock } from '../../test-helper.js';
+import { getCacheHit, logCacheHits } from '../../../lib/application/task-cache-hit.js';
+import config from '../../../config.js';
 
+const { DATABASE_URL } = config;
 describe('#getCacheHit', function () {
   it('should return a positive percentage', async function () {
     // when
-    const result = await getCacheHit(connexionString);
+    const result = await getCacheHit(DATABASE_URL);
 
     // then
     expect(result).to.be.a('number');
@@ -14,6 +15,7 @@ describe('#getCacheHit', function () {
   });
 });
 
+// eslint-disable-next-line mocha/max-top-level-suites
 describe('#logCacheHits', function () {
   it('should not throw an error when API Scalingo fails', async function () {
     let hasThrown = false;

@@ -1,5 +1,5 @@
-const { expect, nock } = require('../../test-helper');
-const taskResponseTime = require('../../../lib/application/task-response-time');
+import { expect, nock } from '../../test-helper.js';
+import taskResponseTime from '../../../lib/application/task-response-time.js';
 
 describe('#taskResponseTime', function () {
   it('should not throw an error when API Scalingo fails', async function () {

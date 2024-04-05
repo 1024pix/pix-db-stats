@@ -1,11 +1,14 @@
-const sinon = require('sinon');
+import sinon from 'sinon';
+import chai from 'chai';
+import nock from 'nock';
+import sinonChai from 'sinon-chai';
+import promised from 'chai-as-promised';
 
-const chai = require('chai');
-chai.use(require('sinon-chai'));
-chai.use(require('chai-as-promised'));
+chai.use(sinonChai);
+chai.use(promised);
+
 const expect = chai.expect;
 
-const nock = require('nock');
 nock.disableNetConnect();
 
 // eslint-disable-next-line mocha/no-top-level-hooks
@@ -15,9 +18,4 @@ afterEach(function () {
 });
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = {
-  chai,
-  expect,
-  nock,
-  sinon,
-};
+export { chai, expect, nock, sinon };
