@@ -12,7 +12,7 @@ describe('#taskResponseTime', function () {
 
     try {
       await taskResponseTime();
-    } catch (error) {
+    } catch (_) {
       hasThrown = true;
     }
     // then

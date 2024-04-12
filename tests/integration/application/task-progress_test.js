@@ -12,7 +12,7 @@ describe('#taskProgress', function () {
 
     try {
       await taskProgress();
-    } catch (error) {
+    } catch (_) {
       hasThrown = true;
     }
     // then

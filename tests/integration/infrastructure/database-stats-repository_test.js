@@ -157,7 +157,6 @@ describe('database-stats-repository', function () {
     const activeQuery = {
       state: 'active',
       query: 'SELECT SLOW',
-      // eslint-disable-next-line mocha/no-setup-in-describe
       query_duration: config.SLOW_QUERY_DURATION_NANO_THRESHOLD + 1,
       username: 'database_user',
       pid: 42,

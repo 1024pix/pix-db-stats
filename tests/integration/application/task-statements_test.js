@@ -12,7 +12,7 @@ describe('#task', function () {
 
     try {
       await task();
-    } catch (error) {
+    } catch (_) {
       hasThrown = true;
     }
     // then
