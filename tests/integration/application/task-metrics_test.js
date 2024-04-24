@@ -12,7 +12,7 @@ describe('#taskMetrics', function () {
 
     try {
       await taskMetrics();
-    } catch (error) {
+    } catch (_) {
       hasThrown = true;
     }
     // then

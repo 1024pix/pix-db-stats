@@ -38,7 +38,7 @@ describe('#task-queries-metric', function () {
 
     try {
       await run(databaseStatsRepository, scalingoApi);
-    } catch (error) {
+    } catch (_) {
       hasThrown = true;
     }
     // then

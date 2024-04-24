@@ -89,7 +89,7 @@ describe('#logBlockingQueries', function () {
 
     try {
       await logBlockingQueries();
-    } catch (error) {
+    } catch (_) {
       hasThrown = true;
     }
     // then
