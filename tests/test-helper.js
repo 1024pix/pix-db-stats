@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import chai from 'chai';
+import * as chai from 'chai';
 import nock from 'nock';
 import sinonChai from 'sinon-chai';
 import promised from 'chai-as-promised';
