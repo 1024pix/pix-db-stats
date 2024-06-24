@@ -1,5 +1,27 @@
 # pix-db-stats Changelog
 
+## v3.15.0 (24/06/2024)
+
+
+### :building_construction: Tech
+- [#88](https://github.com/1024pix/pix-db-stats/pull/88) [TECH][PIX-10501] - Migre en ESM.
+
+### :bug: Correction
+- [#102](https://github.com/1024pix/pix-db-stats/pull/102) [BUGFIX] Corriger l'exécution de la tâche metrics.
+
+### :arrow_up: Montée de version
+- [#104](https://github.com/1024pix/pix-db-stats/pull/104) [BUMP] Update dependency chai-as-promised to v8 (dossier racine).
+- [#97](https://github.com/1024pix/pix-db-stats/pull/97) [BUMP] Update dependency postgres to v15.
+- [#100](https://github.com/1024pix/pix-db-stats/pull/100) [BUMP] Update dependency sinon to v18 (dossier racine).
+- [#96](https://github.com/1024pix/pix-db-stats/pull/96) [BUMP] Lock file maintenance (dossier racine).
+- [#95](https://github.com/1024pix/pix-db-stats/pull/95) [BUMP] Lock file maintenance (dossier racine).
+- [#93](https://github.com/1024pix/pix-db-stats/pull/93) [BUMP] Update dependency eslint to v9.
+- [#85](https://github.com/1024pix/pix-db-stats/pull/85) [BUMP] Update dependency chai to v5 (dossier racine).
+- [#94](https://github.com/1024pix/pix-db-stats/pull/94) [BUMP] Lock file maintenance (dossier racine).
+- [#92](https://github.com/1024pix/pix-db-stats/pull/92) [BUMP] Lock file maintenance (dossier racine).
+- [#91](https://github.com/1024pix/pix-db-stats/pull/91) [BUMP] Lock file maintenance (dossier racine).
+- [#90](https://github.com/1024pix/pix-db-stats/pull/90) [BUMP] Update dependency postgres to v14.11.
+
 ## v3.14.2 (06/03/2024)
 
 
