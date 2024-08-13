@@ -1,5 +1,12 @@
 # pix-db-stats Changelog
 
+## v3.17.0 (13/08/2024)
+
+
+### :bug: Correction
+- [#112](https://github.com/1024pix/pix-db-stats/pull/112) [BUGFIX] Corriger getPgQueriesMetric lorsque le résultat est null.
+- [#111](https://github.com/1024pix/pix-db-stats/pull/111) [BUGFIX] Corriger les imports de run-task-queries-metric.
+
 ## v3.15.0 (24/06/2024)
 
 
