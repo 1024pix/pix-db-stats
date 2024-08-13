@@ -162,6 +162,23 @@ describe('database-stats-repository', function () {
       pid: 42,
     };
 
+    describe('When getPgRunningQueries return a null result', function () {
+      it('it should not throw an exception', async function () {
+        // given
+        const scalingoApp = 'application';
+        const getPgRunningQueriesStub = sinon.stub();
+        getPgRunningQueriesStub.resolves({ result: null });
+        const scalingoApi = { getPgRunningQueries: getPgRunningQueriesStub };
+
+        // when
+        const response = await getPgQueriesMetric(scalingoApi, scalingoApp);
+
+        // then
+        expect(getPgRunningQueriesStub).to.have.been.calledOnceWithExactly(scalingoApp);
+        expect(response).to.deep.equal({ activeQueriesCount: 0, slowQueriesCount: 0, slowQueries: [] });
+      });
+    });
+
     describe('Given running query with less than 250', function () {
       it('should not truncate the returned query', async function () {
         // given
