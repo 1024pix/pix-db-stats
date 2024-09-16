@@ -4,7 +4,7 @@
   "description": "Collecte de statistiques sur la base de données Pix",
   "type": "module",
   "engines": {
-    "node": "^20.8.1"
+    "node": "^20.16.0"
   },
   "scripts": {
     "lint": "eslint .",
