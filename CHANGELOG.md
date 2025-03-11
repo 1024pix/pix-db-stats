@@ -1,5 +1,21 @@
 # pix-db-stats Changelog
 
+## v3.18.0 (11/03/2025)
+
+
+### :arrow_up: Montée de version
+- [#119](https://github.com/1024pix/pix-db-stats/pull/119) [BUMP] Lock file maintenance (dossier racine).
+- [#124](https://github.com/1024pix/pix-db-stats/pull/124) [BUMP] Update dependency mocha to v11 (dossier racine).
+- [#122](https://github.com/1024pix/pix-db-stats/pull/122) [BUMP] Update dependency axios to v1.8.2 [SECURITY].
+- [#121](https://github.com/1024pix/pix-db-stats/pull/121) [BUMP] Update dependency cron to v4 (dossier racine).
+- [#118](https://github.com/1024pix/pix-db-stats/pull/118) [BUMP] Update node to v22 (major).
+- [#116](https://github.com/1024pix/pix-db-stats/pull/116) [BUMP] Update dependency sinon to v19 (dossier racine).
+- [#120](https://github.com/1024pix/pix-db-stats/pull/120) [BUMP] Update dependency postgres to v16.
+- [#109](https://github.com/1024pix/pix-db-stats/pull/109) [BUMP] Update node.
+- [#113](https://github.com/1024pix/pix-db-stats/pull/113) [BUMP] Update dependency axios to v1.7.4 [SECURITY].
+- [#105](https://github.com/1024pix/pix-db-stats/pull/105) [BUMP] Update dependency sinon-chai to v4 (dossier racine).
+- [#110](https://github.com/1024pix/pix-db-stats/pull/110) [BUMP] Lock file maintenance.
+
 ## v3.17.0 (13/08/2024)
 
 
