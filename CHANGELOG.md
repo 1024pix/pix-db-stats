@@ -1,5 +1,19 @@
 # pix-db-stats Changelog
 
+## v3.19.0 (09/05/2025)
+
+
+### :building_construction: Tech
+- [#131](https://github.com/1024pix/pix-db-stats/pull/131) [TECH] Ne pas logger le contenu complet de l'erreur AxiosError.
+
+### :arrow_up: Montée de version
+- [#123](https://github.com/1024pix/pix-db-stats/pull/123) [BUMP] Update dependency eslint-config-prettier to v10 (dossier racine).
+- [#129](https://github.com/1024pix/pix-db-stats/pull/129) [BUMP] Update node.
+- [#130](https://github.com/1024pix/pix-db-stats/pull/130) [BUMP] Update dependency eslint-plugin-mocha to v11 (dossier racine).
+- [#128](https://github.com/1024pix/pix-db-stats/pull/128) [BUMP] Update dependency postgres to v16.8.
+- [#127](https://github.com/1024pix/pix-db-stats/pull/127) [BUMP] Update dependency sinon to v20 (dossier racine).
+- [#125](https://github.com/1024pix/pix-db-stats/pull/125) [BUMP] Update dependency nock to v14 (dossier racine).
+
 ## v3.18.0 (11/03/2025)
 
 
