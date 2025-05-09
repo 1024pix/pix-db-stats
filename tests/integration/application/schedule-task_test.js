@@ -1,5 +1,6 @@
 import { expect, sinon } from '../../test-helper.js';
 import { schedule } from '../../../lib/application/schedule-tasks.js';
+
 describe('Integration | schedule-task', function () {
   let clock;
 

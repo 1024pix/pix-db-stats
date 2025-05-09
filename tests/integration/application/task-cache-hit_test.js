@@ -3,6 +3,7 @@ import { getCacheHit, logCacheHits } from '../../../lib/application/task-cache-h
 import config from '../../../config.js';
 
 const { DATABASE_URL } = config;
+
 describe('#getCacheHit', function () {
   it('should return a positive percentage', async function () {
     // when
