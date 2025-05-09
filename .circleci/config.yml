@@ -30,7 +30,7 @@ workflows:
 jobs:
   build_and_test:
     docker:
-      - image: cimg/node:22.14.0
+      - image: cimg/node:22.15.0
       - image: postgres:16.8-alpine
         environment:
           POSTGRES_HOST_AUTH_METHOD: trust
