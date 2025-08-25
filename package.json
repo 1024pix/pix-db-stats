@@ -1,6 +1,6 @@
 {
   "name": "pix-db-stats",
-  "version": "3.19.0",
+  "version": "3.19.1",
   "description": "Collecte de statistiques sur la base de données Pix",
   "type": "module",
   "engines": {

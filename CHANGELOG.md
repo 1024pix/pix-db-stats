@@ -1,5 +1,15 @@
 # pix-db-stats Changelog
 
+## v3.19.1 (25/08/2025)
+
+
+### :arrow_up: Montée de version
+- [#136](https://github.com/1024pix/pix-db-stats/pull/136) [BUMP] Lock file maintenance (dossier racine).
+- [#126](https://github.com/1024pix/pix-db-stats/pull/126) [BUMP] Lock file maintenance (dossier racine).
+- [#135](https://github.com/1024pix/pix-db-stats/pull/135) [BUMP] Update dependency dotenv to v17 (dossier racine).
+- [#134](https://github.com/1024pix/pix-db-stats/pull/134) [BUMP] Update dependency sinon to v21 (dossier racine).
+- [#133](https://github.com/1024pix/pix-db-stats/pull/133) [BUMP] Update node.
+
 ## v3.19.0 (09/05/2025)
 
 
