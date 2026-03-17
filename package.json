@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.1.1",
-    "chai": "^5.0.0",
+    "chai": "^6.0.0",
     "chai-as-promised": "^8.0.0",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.0.0",
@@ -50,6 +50,6 @@
     "sinon-chai": "^4.0.0"
   },
   "overrides": {
-    "chai": "^5.0.0"
+    "chai": "^6.0.0"
   }
 }
