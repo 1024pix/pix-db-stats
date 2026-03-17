@@ -1,5 +1,17 @@
 # pix-db-stats Changelog
 
+## v3.20.0 (17/03/2026)
+
+
+### :building_construction: Tech
+- [#143](https://github.com/1024pix/pix-db-stats/pull/143) [TECH] Ajouter un mechanisme de retry aux requêtes à l'API Scalingo.
+
+### :arrow_up: Montée de version
+- [#142](https://github.com/1024pix/pix-db-stats/pull/142) [BUMP] Update eslint monorepo to v10 (dossier racine) (major).
+- [#140](https://github.com/1024pix/pix-db-stats/pull/140) [BUMP] Update dependency axios to v1.13.5 [SECURITY].
+- [#137](https://github.com/1024pix/pix-db-stats/pull/137) [BUMP] Update dependency chai to v6 (dossier racine).
+- [#141](https://github.com/1024pix/pix-db-stats/pull/141) [BUMP] Update node to v24 (major).
+
 ## v3.19.1 (25/08/2025)
 
 
