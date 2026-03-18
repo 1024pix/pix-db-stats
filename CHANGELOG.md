@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.20.1 (18/03/2026)
+
+
+### :bug: Correction
+- [#144](https://github.com/1024pix/pix-db-stats/pull/144) [BUGFIX] Corriger le memory leak engendré par axios-retry.
+
 ## v3.20.0 (17/03/2026)
 
 
