@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.21.0 (01/04/2026)
+
+
+### :building_construction: Tech
+- [#146](https://github.com/1024pix/pix-db-stats/pull/146) [TECH] Ne pas logguer entièrement les requêtes trop longues.
+
 ## v3.20.1 (18/03/2026)
 
 
