@@ -8,7 +8,7 @@ const DEFAULT_PROGRESS_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_CACHE_HIT_RATIO_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_QUERIES_METRIC_SCHEDULE = '* * * * * *';
 const DEFAULT_BLOCKING_QUERIES_SCHEDULE = '0 */10 * * * *';
-DEFAULT_PG_CONNECTIONS_ACTIVITY_SCHEDULE = '0 */10 * * * *';
+const DEFAULT_PG_CONNECTIONS_ACTIVITY_SCHEDULE = '0 */10 * * * *';
 function _isFeatureEnabled(valueString) {
   return valueString === 'yes';
 }
