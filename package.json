@@ -17,6 +17,7 @@
     "response-time": "node ./lib/application/run-task-response-time.js",
     "schedule-tasks": "node ./lib/application/schedule-tasks.js",
     "statements": "node ./lib/application/run-task-statements.js",
+    "pg-connections-activity": "node ./lib/application/run-pg-connections-activity.js",
     "test": "NODE_ENV=test mocha --exit --recursive --reporter=${MOCHA_REPORTER:-dot} tests"
   },
   "repository": {
