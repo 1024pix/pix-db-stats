@@ -1,5 +1,16 @@
 # pix-db-stats Changelog
 
+## v3.23.0 (02/06/2026)
+
+
+### :building_construction: Tech
+- [#149](https://github.com/1024pix/pix-db-stats/pull/149) [TECH] add pg connections activity task.
+
+### :arrow_up: Montée de version
+- [#150](https://github.com/1024pix/pix-db-stats/pull/150) [BUMP] Update dependency axios to v1.15.2 [SECURITY].
+- [#148](https://github.com/1024pix/pix-db-stats/pull/148) [BUMP] Update dependency sinon to v22 (dossier racine).
+- [#147](https://github.com/1024pix/pix-db-stats/pull/147) [BUMP] Update dependency axios to v1.15.0 [SECURITY].
+
 ## v3.21.0 (01/04/2026)
 
 
