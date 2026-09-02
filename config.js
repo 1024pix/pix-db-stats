@@ -9,7 +9,7 @@ const DEFAULT_CACHE_HIT_RATIO_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_QUERIES_METRIC_SCHEDULE = '* * * * * *';
 const DEFAULT_BLOCKING_QUERIES_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_PG_CONNECTIONS_ACTIVITY_SCHEDULE = '*/30 * * * * *';
-const DEFAULT_APP_METRICS_SCHEDULE = '0 */10 * * * *';
+const DEFAULT_APP_METRICS_SCHEDULE = '*/30 * * * * *';
 function _isFeatureEnabled(valueString) {
   return valueString === 'yes';
 }
