@@ -186,6 +186,66 @@ describe('database-stats-repository', function () {
       ]);
     });
 
+    describe('When a metric is not available', function () {
+      it('should not report it', async function () {
+        // given
+        const scalingoApp = 'my-application';
+        const scalingoApi = {
+          getAppStats: sinon.stub().resolves([
+            {
+              id: 'web-1',
+              memory_usage: 200105984,
+              memory_limit: 536870912,
+              highest_memory_usage: -1,
+              swap_usage: -1,
+              swap_limit: -1,
+              highest_swap_usage: -1,
+            },
+          ]),
+        };
+
+        // when
+        const metrics = await getAppMetrics(scalingoApi, scalingoApp);
+
+        // then
+        expect(metrics).to.eql([
+          {
+            container: 'web-1',
+            memory: {
+              memory: 200105984,
+              memory_limit: 536870912,
+            },
+          },
+        ]);
+      });
+    });
+
+    describe('When no metric of a container is available', function () {
+      it('should not report the container', async function () {
+        // given
+        const scalingoApp = 'my-application';
+        const scalingoApi = {
+          getAppStats: sinon.stub().resolves([
+            {
+              id: 'web-1',
+              memory_usage: -1,
+              memory_limit: -1,
+              highest_memory_usage: -1,
+              swap_usage: -1,
+              swap_limit: -1,
+              highest_swap_usage: -1,
+            },
+          ]),
+        };
+
+        // when
+        const metrics = await getAppMetrics(scalingoApi, scalingoApp);
+
+        // then
+        expect(metrics).to.eql([]);
+      });
+    });
+
     describe('When getAppStats returns no stats', function () {
       it('should not throw an exception', async function () {
         // given
