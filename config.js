@@ -9,6 +9,7 @@ const DEFAULT_CACHE_HIT_RATIO_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_QUERIES_METRIC_SCHEDULE = '* * * * * *';
 const DEFAULT_BLOCKING_QUERIES_SCHEDULE = '0 */10 * * * *';
 const DEFAULT_PG_CONNECTIONS_ACTIVITY_SCHEDULE = '*/30 * * * * *';
+const DEFAULT_APP_METRICS_SCHEDULE = '0 */10 * * * *';
 function _isFeatureEnabled(valueString) {
   return valueString === 'yes';
 }
@@ -25,7 +26,9 @@ const config = {
   FT_QUERIES_METRIC: _isFeatureEnabled(process.env.FT_QUERIES_METRIC),
   FT_BLOCKING_QUERIES: _isFeatureEnabled(process.env.FT_BLOCKING_QUERIES),
   FT_PG_CONNECTIONS_ACTIVITY: _isFeatureEnabled(process.env.FT_PG_CONNECTIONS_ACTIVITY),
+  FT_APP_METRICS: _isFeatureEnabled(process.env.FT_APP_METRICS),
   METRICS_SCHEDULE: process.env.METRICS_SCHEDULE,
+  APP_METRICS_SCHEDULE: process.env.APP_METRICS_SCHEDULE || DEFAULT_APP_METRICS_SCHEDULE,
   STATEMENTS_SCHEDULE: process.env.STATEMENTS_SCHEDULE,
   RESPONSE_TIME_SCHEDULE: process.env.RESPONSE_TIME_SCHEDULE,
   RESPONSE_TIME_QUERY: process.env.RESPONSE_TIME_QUERY || DEFAULT_RESPONSE_TIME_QUERY,

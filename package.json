@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "app-metrics": "node ./lib/application/run-task-app-metrics.js",
     "metrics": "node ./lib/application/run-task-metrics.js",
     "preinstall": "npx check-engine",
     "progress": "node ./lib/application/run-task-progress.js",
