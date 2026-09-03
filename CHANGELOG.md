@@ -1,5 +1,14 @@
 # pix-db-stats Changelog
 
+## v3.24.0 (03/09/2026)
+
+
+### :rocket: Amélioration
+- [#162](https://github.com/1024pix/pix-db-stats/pull/162) [FEATURE] Remonte la mémoire et la swap des conteneurs applicatifs Scalingo.
+
+### :building_construction: Tech
+- [#157](https://github.com/1024pix/pix-db-stats/pull/157) [TECH] Utiliser la configuration Renovate js-project.
+
 ## v3.23.0 (02/06/2026)
 
 
