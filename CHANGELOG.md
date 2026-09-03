@@ -1,5 +1,14 @@
 # pix-db-stats Changelog
 
+## v3.25.0 (03/09/2026)
+
+
+### :rocket: Amélioration
+- [#163](https://github.com/1024pix/pix-db-stats/pull/163) [FEATURE] Remonte les métriques conteneurs d'applications sans base de données.
+
+### :coffee: Autre
+- [#164](https://github.com/1024pix/pix-db-stats/pull/164) [DOC] Met à jour le README avec le périmètre actuel de l'application.
+
 ## v3.24.0 (03/09/2026)
 
 
