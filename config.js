@@ -17,6 +17,7 @@ function _isFeatureEnabled(valueString) {
 const config = {
   SCALINGO_REGION: process.env.SCALINGO_REGION,
   SCALINGO_APPS: JSON.parse(process.env.SCALINGO_APPS || '[]'),
+  SCALINGO_ADDITIONAL_APPS: JSON.parse(process.env.SCALINGO_ADDITIONAL_APPS || '[]'),
   SCALINGO_TOKEN: process.env.SCALINGO_TOKEN,
   FT_METRICS: _isFeatureEnabled(process.env.FT_METRICS),
   FT_STATEMENTS: _isFeatureEnabled(process.env.FT_STATEMENTS),
@@ -45,6 +46,7 @@ const config = {
 if (process.env.NODE_ENV === 'test') {
   config.SCALINGO_REGION = 'REGION';
   config.SCALINGO_APPS = ['application-1', 'application-2'];
+  config.SCALINGO_ADDITIONAL_APPS = ['application-3'];
   config.FT_QUERIES_METRIC = true;
   config.QUERIES_METRIC_SCHEDULE = eachSecond;
   config.BLOCKING_QUERIES_SCHEDULE = eachSecond;
