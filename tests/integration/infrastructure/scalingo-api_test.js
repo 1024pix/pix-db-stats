@@ -1,4 +1,5 @@
 import {
+  getAppStats,
   getDbMetrics,
   getAddons,
   getInstancesStatus,
@@ -31,6 +32,30 @@ describe('scalingo-api', function () {
       // then
       expect(nock.isDone()).to.be.true;
       expect(addonsResponse).to.deep.equal(addons);
+    });
+  });
+
+  describe('#getAppStats', function () {
+    it('should returns stats of the containers of an application', async function () {
+      // given
+      const application = 'my-application';
+      const stats = [{ id: 'web-1', memory_usage: 200105984 }];
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .get(`/apps/${application}/stats`)
+        .reply(200, { stats });
+
+      // when
+      const statsResponse = await getAppStats(application);
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(statsResponse).to.deep.equal(stats);
     });
   });
 

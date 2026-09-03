@@ -1,4 +1,5 @@
 import {
+  getAppMetrics,
   getAvailableDatabases,
   getDBMetrics,
   getPgQueriesMetric,
@@ -144,6 +145,119 @@ describe('database-stats-repository', function () {
       expect(getDbDiskStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, 'instance-leader');
       expect(getDbDiskIOStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, 'instance-leader');
       expect(metrics).to.eql(expectedMetrics);
+    });
+  });
+
+  describe('#getAppMetrics', function () {
+    it('should return the memory and swap usage of each container of the application', async function () {
+      // given
+      const scalingoApp = 'my-application';
+      const getAppStatsStub = sinon.stub().resolves([
+        {
+          id: 'web-1',
+          cpu_usage: 0,
+          memory_usage: 200105984,
+          memory_limit: 536870912,
+          highest_memory_usage: 203440128,
+          swap_usage: 212992,
+          swap_limit: 1610612736,
+          highest_swap_usage: 0,
+        },
+      ]);
+      const scalingoApi = { getAppStats: getAppStatsStub };
+
+      // when
+      const metrics = await getAppMetrics(scalingoApi, scalingoApp);
+
+      // then
+      expect(getAppStatsStub).to.have.been.calledOnceWithExactly(scalingoApp);
+      expect(metrics).to.eql([
+        {
+          container: 'web-1',
+          memory: {
+            memory: 200105984,
+            memory_max: 203440128,
+            memory_limit: 536870912,
+            swap: 212992,
+            swap_max: 0,
+            swap_limit: 1610612736,
+          },
+        },
+      ]);
+    });
+
+    describe('When a metric is not available', function () {
+      it('should not report it', async function () {
+        // given
+        const scalingoApp = 'my-application';
+        const scalingoApi = {
+          getAppStats: sinon.stub().resolves([
+            {
+              id: 'web-1',
+              memory_usage: 200105984,
+              memory_limit: 536870912,
+              highest_memory_usage: -1,
+              swap_usage: -1,
+              swap_limit: -1,
+              highest_swap_usage: -1,
+            },
+          ]),
+        };
+
+        // when
+        const metrics = await getAppMetrics(scalingoApi, scalingoApp);
+
+        // then
+        expect(metrics).to.eql([
+          {
+            container: 'web-1',
+            memory: {
+              memory: 200105984,
+              memory_limit: 536870912,
+            },
+          },
+        ]);
+      });
+    });
+
+    describe('When no metric of a container is available', function () {
+      it('should not report the container', async function () {
+        // given
+        const scalingoApp = 'my-application';
+        const scalingoApi = {
+          getAppStats: sinon.stub().resolves([
+            {
+              id: 'web-1',
+              memory_usage: -1,
+              memory_limit: -1,
+              highest_memory_usage: -1,
+              swap_usage: -1,
+              swap_limit: -1,
+              highest_swap_usage: -1,
+            },
+          ]),
+        };
+
+        // when
+        const metrics = await getAppMetrics(scalingoApi, scalingoApp);
+
+        // then
+        expect(metrics).to.eql([]);
+      });
+    });
+
+    describe('When getAppStats returns no stats', function () {
+      it('should not throw an exception', async function () {
+        // given
+        const scalingoApp = 'my-application';
+        const scalingoApi = { getAppStats: sinon.stub().resolves(null) };
+
+        // when
+        const metrics = await getAppMetrics(scalingoApi, scalingoApp);
+
+        // then
+        expect(metrics).to.eql([]);
+      });
     });
   });
 
