@@ -149,13 +149,13 @@ describe('database-stats-repository', function () {
   });
 
   describe('#getAppMetrics', function () {
-    it('should return the memory and swap usage of each container of the application', async function () {
+    it('should return the cpu, memory and swap usage of each container of the application', async function () {
       // given
       const scalingoApp = 'my-application';
       const getAppStatsStub = sinon.stub().resolves([
         {
           id: 'web-1',
-          cpu_usage: 0,
+          cpu_usage: 42,
           memory_usage: 200105984,
           memory_limit: 536870912,
           highest_memory_usage: 203440128,
@@ -181,7 +181,9 @@ describe('database-stats-repository', function () {
             swap: 212992,
             swap_max: 0,
             swap_limit: 1610612736,
+            memory_total: 200318976,
           },
+          cpu: { cpu: 42 },
         },
       ]);
     });
@@ -215,8 +217,73 @@ describe('database-stats-repository', function () {
               memory: 200105984,
               memory_limit: 536870912,
             },
+            cpu: {},
           },
         ]);
+      });
+    });
+
+    describe('When the swap usage is not available', function () {
+      it('should not report the total memory usage', async function () {
+        // given
+        const scalingoApp = 'my-application';
+        const scalingoApi = {
+          getAppStats: sinon.stub().resolves([
+            {
+              id: 'web-1',
+              cpu_usage: 42,
+              memory_usage: 200105984,
+              memory_limit: 536870912,
+              highest_memory_usage: 203440128,
+              swap_usage: -1,
+              swap_limit: -1,
+              highest_swap_usage: -1,
+            },
+          ]),
+        };
+
+        // when
+        const metrics = await getAppMetrics(scalingoApi, scalingoApp);
+
+        // then
+        expect(metrics).to.eql([
+          {
+            container: 'web-1',
+            memory: {
+              memory: 200105984,
+              memory_max: 203440128,
+              memory_limit: 536870912,
+            },
+            cpu: { cpu: 42 },
+          },
+        ]);
+      });
+    });
+
+    describe('When only the cpu usage of a container is available', function () {
+      it('should report the container', async function () {
+        // given
+        const scalingoApp = 'my-application';
+        const scalingoApi = {
+          getAppStats: sinon.stub().resolves([
+            {
+              id: 'web-1',
+              cpu_usage: 42,
+              memory_usage: -1,
+              memory_limit: -1,
+              highest_memory_usage: -1,
+              swap_usage: -1,
+              swap_limit: -1,
+              highest_swap_usage: -1,
+            },
+          ]),
+        };
+
+        // when
+        const metrics = await getAppMetrics(scalingoApi, scalingoApp);
+
+        // then
+        expect(metrics).to.eql([{ container: 'web-1', memory: {}, cpu: { cpu: 42 } }]);
       });
     });
 
@@ -228,6 +295,7 @@ describe('database-stats-repository', function () {
           getAppStats: sinon.stub().resolves([
             {
               id: 'web-1',
+              cpu_usage: -1,
               memory_usage: -1,
               memory_limit: -1,
               highest_memory_usage: -1,

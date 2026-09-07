@@ -41,6 +41,49 @@ describe('#taskAppMetrics', function () {
     expect(monitoredApps).to.deep.equal(['application-1', 'application-2', 'application-3']);
   });
 
+  it('should report the cpu and the memory of each container', async function () {
+    // given
+    const consoleLog = sinon.stub(console, 'log');
+    sinon.stub(config, 'SCALINGO_APPS').value(['application-1']);
+    sinon.stub(config, 'SCALINGO_ADDITIONAL_APPS').value([]);
+    nock('https://auth.scalingo.com/v1').persist().post('/tokens/exchange').reply(200, { token: 'my-token' });
+    nock('https://api.REGION.scalingo.com/v1')
+      .get(`/apps/application-1/stats`)
+      .reply(200, {
+        stats: [
+          {
+            id: 'web-1',
+            cpu_usage: 42,
+            memory_usage: 200105984,
+            memory_limit: 536870912,
+            highest_memory_usage: 203440128,
+            swap_usage: 212992,
+            swap_limit: 1610612736,
+            highest_swap_usage: 0,
+          },
+        ],
+      });
+
+    // when
+    await taskAppMetrics();
+
+    // then
+    expect(nock.isDone()).to.be.true;
+    expect(JSON.parse(consoleLog.firstCall.args[0]).data).to.deep.equal({
+      container: 'web-1',
+      memory: {
+        memory: 200105984,
+        memory_max: 203440128,
+        memory_limit: 536870912,
+        swap: 212992,
+        swap_max: 0,
+        swap_limit: 1610612736,
+        memory_total: 200318976,
+      },
+      cpu: { cpu: 42 },
+    });
+  });
+
   it('should report metrics only once for an application listed both as a database and as an additional application', async function () {
     // given
 

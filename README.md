@@ -15,7 +15,7 @@ Le périmètre couvert est double :
 | Tâche                     | Feature toggle               | Périodicité                        | Description                                                                                                    |
 | ------------------------- | ---------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `metrics`                 | `FT_METRICS`                 | `METRICS_SCHEDULE`                 | Métriques des addons base de données (CPU, RAM, disque, IO, stats PostgreSQL) du nœud leader                   |
-| `app-metrics`             | `FT_APP_METRICS`             | `APP_METRICS_SCHEDULE`             | Mémoire et swap des conteneurs des applications (y compris `SCALINGO_ADDITIONAL_APPS`)                         |
+| `app-metrics`             | `FT_APP_METRICS`             | `APP_METRICS_SCHEDULE`             | CPU, mémoire et swap (dont leur total) des conteneurs des applications (y compris `SCALINGO_ADDITIONAL_APPS`)  |
 | `statements`              | `FT_STATEMENTS`              | `STATEMENTS_SCHEDULE`              | Statistiques de requêtes issues de `pg_stat_statements` (puis remise à zéro des compteurs)                     |
 | `response-time`           | `FT_RESPONSE_TIME`           | `RESPONSE_TIME_SCHEDULE`           | Temps de réponse d'une requête témoin (`RESPONSE_TIME_QUERY`), jouée en transaction lecture seule              |
 | `progress`                | `FT_PROGRESS`                | `PROGRESS_SCHEDULE`                | Opérations longues en cours, via les vues `pg_stat_progress_*` (vacuum, création d'index…)                     |
