@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.26.0 (08/09/2026)
+
+
+### :rocket: Amélioration
+- [#166](https://github.com/1024pix/pix-db-stats/pull/166) [FEATURE] Ajoute le CPU et la mémoire totale aux métriques des conteneurs.
+
 ## v3.25.0 (03/09/2026)
 
 
