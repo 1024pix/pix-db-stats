@@ -1,4 +1,5 @@
 import {
+  getApps,
   getAppStats,
   getDbMetrics,
   getAddons,
@@ -10,7 +11,70 @@ import {
 
 import { nock, expect } from '../../test-helper.js';
 
+function _tokenExpiringAt(expiryInSeconds) {
+  const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
+  const payload = Buffer.from(JSON.stringify({ exp: expiryInSeconds })).toString('base64url');
+  return `${header}.${payload}.signature`;
+}
+
 describe('scalingo-api', function () {
+  describe('application token', function () {
+    it('should exchange the token only once while it has not expired', async function () {
+      // given
+      const anHourFromNow = Math.round(Date.now() / 1000) + 3600;
+      const expectedToken = _tokenExpiringAt(anHourFromNow);
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).once().reply(200, { token: expectedToken });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: `Bearer ${expectedToken}`,
+        },
+      })
+        .get('/apps/my-application/addons')
+        .twice()
+        .reply(200, { addons: [] });
+
+      // when
+      await getAddons('my-application');
+      await getAddons('my-application');
+
+      // then
+      expect(nock.isDone()).to.be.true;
+    });
+
+    it('should exchange the token again once it is about to expire', async function () {
+      // given
+      const inThirtySeconds = Math.round(Date.now() / 1000) + 30;
+      nock('https://auth.scalingo.com/v1')
+        .post(`/tokens/exchange`)
+        .twice()
+        .reply(200, { token: _tokenExpiringAt(inThirtySeconds) });
+
+      nock('https://api.REGION.scalingo.com/v1').get('/apps/my-application/addons').twice().reply(200, { addons: [] });
+
+      // when
+      await getAddons('my-application');
+      await getAddons('my-application');
+
+      // then
+      expect(nock.isDone()).to.be.true;
+    });
+
+    it('should exchange the token again when its expiry cannot be read', async function () {
+      // given
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).twice().reply(200, { token: 'not-a-jwt' });
+
+      nock('https://api.REGION.scalingo.com/v1').get('/apps/my-application/addons').twice().reply(200, { addons: [] });
+
+      // when
+      await getAddons('my-application');
+      await getAddons('my-application');
+
+      // then
+      expect(nock.isDone()).to.be.true;
+    });
+  });
+
   describe('#getAddons', function () {
     it('should returns addons of an application', async function () {
       // given
@@ -32,6 +96,29 @@ describe('scalingo-api', function () {
       // then
       expect(nock.isDone()).to.be.true;
       expect(addonsResponse).to.deep.equal(addons);
+    });
+  });
+
+  describe('#getApps', function () {
+    it('should returns every application of the account', async function () {
+      // given
+      const apps = [{ name: 'my-application' }];
+      nock('https://auth.scalingo.com/v1').post(`/tokens/exchange`).reply(200, { token: 'my-token' });
+
+      nock('https://api.REGION.scalingo.com/v1', {
+        reqheaders: {
+          authorization: 'Bearer my-token',
+        },
+      })
+        .get('/apps')
+        .reply(200, { apps });
+
+      // when
+      const appsResponse = await getApps();
+
+      // then
+      expect(nock.isDone()).to.be.true;
+      expect(appsResponse).to.deep.equal(apps);
     });
   });
 

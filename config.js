@@ -14,10 +14,22 @@ function _isFeatureEnabled(valueString) {
   return valueString === 'yes';
 }
 
+// Wildcard value of SCALINGO_ADDITIONAL_APPS, asking for every application
+// of the Scalingo account to be monitored for its containers
+const ALL_APPS = '*';
+
+function _parseAdditionalApps(valueString) {
+  const value = (valueString || '[]').trim();
+  if (value === ALL_APPS) {
+    return ALL_APPS;
+  }
+  return JSON.parse(value);
+}
+
 const config = {
   SCALINGO_REGION: process.env.SCALINGO_REGION,
   SCALINGO_APPS: JSON.parse(process.env.SCALINGO_APPS || '[]'),
-  SCALINGO_ADDITIONAL_APPS: JSON.parse(process.env.SCALINGO_ADDITIONAL_APPS || '[]'),
+  SCALINGO_ADDITIONAL_APPS: _parseAdditionalApps(process.env.SCALINGO_ADDITIONAL_APPS),
   SCALINGO_TOKEN: process.env.SCALINGO_TOKEN,
   FT_METRICS: _isFeatureEnabled(process.env.FT_METRICS),
   FT_STATEMENTS: _isFeatureEnabled(process.env.FT_STATEMENTS),
@@ -54,4 +66,5 @@ if (process.env.NODE_ENV === 'test') {
   config.BLOCKING_QUERIES_MINUTES_THRESHOLD = process.env.BLOCKING_QUERIES_MINUTES_THRESHOLD = 0;
 }
 
+export { ALL_APPS };
 export default config;
