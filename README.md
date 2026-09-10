@@ -10,6 +10,17 @@ Le périmètre couvert est double :
 - **les conteneurs** (mémoire et swap) de ces mêmes applications, ainsi que ceux des applications listées dans
   `SCALINGO_ADDITIONAL_APPS`, qui n'ont pas forcément de base de données (applications front, par exemple).
 
+`SCALINGO_ADDITIONAL_APPS` accepte soit une liste de noms d'applications (au format JSON), soit le wildcard `*` :
+dans ce dernier cas, la liste des applications accessibles avec le `SCALINGO_TOKEN` est récupérée à chaque
+exécution de la tâche `app-metrics`, et les conteneurs de toutes ces applications sont relevés.
+
+L'[API REST Scalingo][api] est documentée comme limitée à **60 requêtes par minute** (au-delà : `HTTP 429`), et
+chaque application surveillée coûte une requête par exécution : avec les 45 applications d'`osc-secnum-fr1` et la
+périodicité par défaut de 30 secondes, le wildcard demande donc environ 92 requêtes par minute. La tâche loggue, une
+fois par processus, un avertissement (`status: WARNING`) quand la combinaison nombre d'applications / périodicité
+dépasse ce quota — à adapter en ralentissant `APP_METRICS_SCHEDULE`. Le token applicatif Scalingo, nécessaire à
+chaque appel, est mis en cache jusqu'à son expiration pour ne pas consommer le quota inutilement.
+
 ## Tâches disponibles
 
 | Tâche                     | Feature toggle               | Périodicité                        | Description                                                                                                    |
@@ -80,4 +91,5 @@ L'URL de cette base est configurée par `TEST_DATABASE_URL` dans le `.env`.
 Lint : `npm run lint` (et `npm run lint:fix` pour corriger).
 
 [Scalingo]: https://scalingo.com/
+[api]: https://developers.scalingo.com/#rate-limiting
 [cron]: https://github.com/kelektiv/node-cron#available-cron-patterns

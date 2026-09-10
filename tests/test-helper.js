@@ -4,6 +4,9 @@ import nock from 'nock';
 import sinonChai from 'sinon-chai';
 import promised from 'chai-as-promised';
 
+import { forgetApiRateLimitWarning } from '../lib/application/task-app-metrics.js';
+import { forgetApplicationToken } from '../lib/infrastructure/scalingo-api.js';
+
 chai.use(sinonChai);
 chai.use(promised);
 
@@ -15,6 +18,8 @@ nock.disableNetConnect();
 afterEach(function () {
   sinon.restore();
   nock.cleanAll();
+  forgetApplicationToken();
+  forgetApiRateLimitWarning();
 });
 
 // eslint-disable-next-line mocha/no-exports

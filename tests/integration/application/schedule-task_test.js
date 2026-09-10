@@ -3,12 +3,17 @@ import { schedule } from '../../../lib/application/schedule-tasks.js';
 
 describe('Integration | schedule-task', function () {
   let clock;
+  let scheduledJobs;
 
   beforeEach(function () {
     clock = sinon.useFakeTimers();
+    scheduledJobs = [];
   });
 
+  // Jobs outliving the test would keep running, on real timers, during the
+  // next ones
   afterEach(function () {
+    scheduledJobs.forEach((job) => job.stop());
     clock.restore();
   });
 
@@ -19,7 +24,7 @@ describe('Integration | schedule-task', function () {
       const runStub = sinon.stub().resolves();
 
       // when
-      schedule({ runCommand: runStub });
+      scheduledJobs = schedule({ runCommand: runStub });
 
       // then
       expect(runStub).to.not.have.been.called;

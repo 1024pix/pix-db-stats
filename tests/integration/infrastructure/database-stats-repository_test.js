@@ -1,4 +1,5 @@
 import {
+  getApplicationNames,
   getAppMetrics,
   getAvailableDatabases,
   getDBMetrics,
@@ -145,6 +146,21 @@ describe('database-stats-repository', function () {
       expect(getDbDiskStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, 'instance-leader');
       expect(getDbDiskIOStub).to.have.been.calledOnceWithExactly(scalingoApp, addonId, 'instance-leader');
       expect(metrics).to.eql(expectedMetrics);
+    });
+  });
+
+  describe('#getApplicationNames', function () {
+    it('should return the name of every application of the account', async function () {
+      // given
+      const getAppsStub = sinon.stub().resolves([{ name: 'my-application' }, { name: 'my-other-application' }]);
+      const scalingoApi = { getApps: getAppsStub };
+
+      // when
+      const applicationNames = await getApplicationNames(scalingoApi);
+
+      // then
+      expect(getAppsStub).to.have.been.calledOnceWithExactly();
+      expect(applicationNames).to.eql(['my-application', 'my-other-application']);
     });
   });
 
