@@ -56,3 +56,4 @@ jobs:
           command: npm run test
           environment:
             DATABASE_URL: postgres://user@localhost:5432/database
+            MOCHA_REPORTER: spec
