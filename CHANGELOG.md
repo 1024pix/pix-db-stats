@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.27.0 (10/09/2026)
+
+
+### :rocket: Amélioration
+- [#167](https://github.com/1024pix/pix-db-stats/pull/167) [FEATURE] Permet de surveiller les conteneurs de toutes les applications.
+
 ## v3.26.0 (08/09/2026)
 
 
