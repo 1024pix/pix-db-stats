@@ -19,7 +19,7 @@
 # - for data that is specific to a build (commit), like the source code downloaded from github,
 #   we use Circle CI's workspace feature to transport it between jobs.
 
-version: 2.0
+version: 2.1
 
 workflows:
   version: 2
