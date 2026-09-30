@@ -1,5 +1,11 @@
 # pix-db-stats Changelog
 
+## v3.28.0 (30/09/2026)
+
+
+### :building_construction: Tech
+- [#169](https://github.com/1024pix/pix-db-stats/pull/169) [TECH] Améliorer la détection des locks sur la table db-stats. (PIX-PIX-22973).
+
 ## v3.27.0 (10/09/2026)
 
 
