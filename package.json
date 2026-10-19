@@ -40,19 +40,19 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "chai": "6.2.2",
+    "chai": "6.3.0",
     "chai-as-promised": "8.0.2",
     "eslint": "10.0.3",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-mocha": "11.1.0",
     "eslint-plugin-prettier": "5.5.4",
-    "mocha": "11.7.1",
-    "nock": "14.0.10",
+    "mocha": "11.8.0",
+    "nock": "14.0.17",
     "prettier": "3.6.2",
-    "sinon": "22.0.0",
+    "sinon": "22.1.0",
     "sinon-chai": "4.0.1"
   },
   "overrides": {
-    "chai": "6.2.2"
+    "chai": "6.3.0"
   }
 }
