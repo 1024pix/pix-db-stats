@@ -14,7 +14,7 @@ const expect = chai.expect;
 
 nock.disableNetConnect();
 
-// eslint-disable-next-line mocha/no-top-level-hooks
+// eslint-disable-next-line mocha/no-root-hooks
 afterEach(function () {
   sinon.restore();
   nock.cleanAll();

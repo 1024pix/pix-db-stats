@@ -27,7 +27,7 @@ export default [
       'mocha/no-exclusive-tests': ['error'],
       'mocha/no-pending-tests': ['error'],
       'mocha/no-hooks-for-single-case': ['off'],
-      'mocha/no-top-level-hooks': ['error'],
+      'mocha/no-root-hooks': ['error'],
       'mocha/no-global-tests': ['off'],
     },
   },

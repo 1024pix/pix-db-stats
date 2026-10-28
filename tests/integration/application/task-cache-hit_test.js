@@ -16,7 +16,6 @@ describe('#getCacheHit', function () {
   });
 });
 
-// eslint-disable-next-line mocha/max-top-level-suites
 describe('#logCacheHits', function () {
   it('should not throw an error when API Scalingo fails', async function () {
     let hasThrown = false;
