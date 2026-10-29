@@ -31,7 +31,7 @@ jobs:
   build_and_test:
     docker:
       # renovate datasource=node-version depName=node
-      - image: cimg/node:24.22.1
+      - image: cimg/node:26.12.1
       - image: postgres:16.8-alpine
         environment:
           POSTGRES_HOST_AUTH_METHOD: trust
